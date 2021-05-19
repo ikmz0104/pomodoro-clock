@@ -19,9 +19,15 @@ type PropsOptional = {
 const Times: React.FC<PropsOptional> = ({ timeLabel, timeLeftInSecond }) => {
   return (
     <div className={styles.times}>
-      <div className={styles['times-content']}>
-        <label id="timer-label">{timeLabel}</label>
-        <span id="time-left">{formatTime(timeLeftInSecond)}</span>
+      <div className={styles['times-content-wrapper']}>
+        <div className={styles['times-content']}>
+          <label id="timer-label" className={styles['timer-label']}>
+            {timeLabel}
+          </label>
+          <span id="time-left" className={styles['time-left']}>
+            {formatTime(timeLeftInSecond)}
+          </span>
+        </div>
       </div>
     </div>
   );

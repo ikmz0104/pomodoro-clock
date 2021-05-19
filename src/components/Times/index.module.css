@@ -5,27 +5,35 @@
   justify-content: center;
 }
 
+.times-content-wrapper {
+  width: 270px;
+  height: 270px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, rgba(78, 191, 201, 1) 0%, rgba(71, 180, 238, 1) 50%, rgba(50, 137, 245, 1) 100%);
+  box-shadow: 0 10px 20px 0 rgba(60, 194, 235, 0.5);
+}
+
 .times-content {
   display: inline-block;
   margin: 0 auto;
-  width: 280px;
-  height: 280px;
-  margin-top: 25px;
+  width: 240px;
+  height: 240px;
+  margin-top: 15px;
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 5px solid #4ebfc9;
   border-radius: 50%;
+  background: #fff;
 }
 
-#timer-label {
-  font-size: 1.5rem;
-  font-weight: 700;
+.timer-label {
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
-#time-left {
-  font-size: 5rem;
-  font-weight: 700;
+.time-left {
+  font-size: 4.5rem;
+  font-weight: 300;
 }
