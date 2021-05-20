@@ -8,7 +8,7 @@
 .times-content-wrapper {
   width: 270px;
   height: 270px;
-  border-radius: 50%;
+  border-radius: 32% 68% 67% 33% / 31% 37% 63% 69%;
   background: linear-gradient(90deg, rgba(78, 191, 201, 1) 0%, rgba(71, 180, 238, 1) 50%, rgba(50, 137, 245, 1) 100%);
   box-shadow: 0 10px 20px 0 rgba(60, 194, 235, 0.5);
 }
@@ -24,7 +24,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 41% 59% 63% 37% / 27% 42% 58% 73%;
   background: #fff;
 }
 
