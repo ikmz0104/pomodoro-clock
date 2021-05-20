@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styles from './index.module.css';
+import { theme } from '../../util/theme';
 
 const formatTime = (timeLeftInSecond: number) => {
   let minute: any = Math.floor(timeLeftInSecond / 60);
@@ -19,7 +20,10 @@ type PropsOptional = {
 const Times: React.FC<PropsOptional> = ({ timeLabel, timeLeftInSecond }) => {
   return (
     <div className={styles.times}>
-      <div className={styles['times-content-wrapper']}>
+      <div
+        className={styles['times-content-wrapper']}
+        style={{ background: timeLabel === 'Session' ? theme.wrapperColor.settion : theme.wrapperColor.break }}
+      >
         <div className={styles['times-content']}>
           <label id="timer-label" className={styles['timer-label']}>
             {timeLabel}

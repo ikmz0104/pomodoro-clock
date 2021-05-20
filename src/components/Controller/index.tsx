@@ -1,40 +1,27 @@
 import React from 'react';
+import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
+import PauseOutlinedIcon from '@material-ui/icons/PauseOutlined';
+import AutorenewOutlinedIcon from '@material-ui/icons/AutorenewOutlined';
 import styles from './index.module.css';
 import CustomButton from '../Button';
+import { RoundButton } from '../RoundButton';
 
 type PropsOptional = {
   onStartStop: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onReset: (event: React.MouseEvent<HTMLButtonElement>) => void;
   isStart: boolean;
+  timeLabel: string;
 };
 
-const Controller: React.FC<PropsOptional> = ({ onStartStop, onReset, isStart }) => {
+const Controller: React.FC<PropsOptional> = ({ onStartStop, onReset, isStart, timeLabel }) => {
+  const startIcon = <PlayArrowOutlinedIcon />;
+  const pauseIcon = <PauseOutlinedIcon />;
   return (
     <div className={styles.controller}>
-      <CustomButton
-        id="start-stop"
-        style={{
-          fontSize: '14px',
-          background: '#40a6f1',
-          alignSelf: 'center',
-          // boxShadow: '0 2px 5px 1px #A4D2FF',
-        }}
-        onClick={onStartStop}
-      >
-        {isStart ? 'Stop' : 'Start'}
-      </CustomButton>
-      <CustomButton
-        id="reset"
-        style={{
-          fontSize: '14px',
-          background: '#40a6f1',
-          alignSelf: 'center',
-          // boxShadow: '0 2px 5px 1px #A4D2FF',
-        }}
-        onClick={onReset}
-      >
-        Reset
-      </CustomButton>
+      <RoundButton onClick={onStartStop} isStart={isStart}>
+        {!isStart ? startIcon : pauseIcon}
+      </RoundButton>
+      <AutorenewOutlinedIcon onClick={onReset} className={styles.resetbutton} />
     </div>
   );
 };
