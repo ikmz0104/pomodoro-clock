@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
+import SettingsIcon from '@material-ui/icons/Settings';
 import styles from '../styles/Home.module.css';
 import Times from '../components/Times';
 import Controller from '../components/Controller';
@@ -23,7 +24,16 @@ const Home: React.FC = (props) => {
   }, [timeLeftInSecond]);
 
   const onReset = () => {
-    console.log('onReset');
+    setBreakLength(Number.parseInt(defaultBreakLength, 10));
+    setSessionLength(Number.parseInt(defaultSessionLength, 10));
+    setTimeLabel('Session');
+    setTimeLeftInSecond(Number.parseInt(defaultSessionLength, 10) * 60);
+    setIsStart(false);
+    setTimerInterval(null);
+
+    audioBeep.current.pause();
+    audioBeep.current.currentTime = 0;
+    timerInterval && clearInterval(timerInterval);
   };
 
   const onStartStop = () => {
@@ -61,11 +71,16 @@ const Home: React.FC = (props) => {
   };
 
   return (
-    <div className={styles.container}>
-      <Times timeLabel={timeLabel} timeLeftInSecond={timeLeftInSecond} />
-      <Controller onReset={onReset} onStartStop={onStartStop} isStart={isStart} />
-      <audio id="beep" preload="auto" src="https://goo.gl/65cBl1" ref={audioBeep}></audio>
-    </div>
+    <>
+      <div style={{ top: 40, right: 40, position: 'fixed' }}>
+        <SettingsIcon />
+      </div>
+      <div className={styles.container}>
+        <Times timeLabel={timeLabel} timeLeftInSecond={timeLeftInSecond} />
+        <Controller onReset={onReset} onStartStop={onStartStop} isStart={isStart} timeLabel={timeLabel} />
+        <audio id="beep" preload="auto" src="https://goo.gl/65cBl1" ref={audioBeep}></audio>
+      </div>
+    </>
   );
 };
 
