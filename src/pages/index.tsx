@@ -1,59 +1,70 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+import Times from '../components/Times';
+import Controller from '../components/Controller';
 
-const Home: React.FC = () => {
+const Home: React.FC = (props) => {
+  const defaultSessionLength = '1';
+  const defaultBreakLength = '5';
+
+  const audioBeep: any = React.createRef();
+
+  //state
+  const [isStart, setIsStart] = useState(false);
+  const [timeLabel, setTimeLabel] = useState('Session');
+  const [timeLeftInSecond, setTimeLeftInSecond] = useState(Number.parseInt(defaultSessionLength, 10) * 60);
+  const [breakLength, setBreakLength] = useState(Number.parseInt(defaultBreakLength, 10));
+  const [sessionLength, setSessionLength] = useState(Number.parseInt(defaultSessionLength, 10));
+  const [timerInterval, setTimerInterval] = useState(null);
+
+  useEffect(() => {
+    phaseControl();
+  }, [timeLeftInSecond]);
+
+  const onReset = () => {
+    console.log('onReset');
+  };
+
+  const onStartStop = () => {
+    if (!isStart) {
+      setIsStart(!isStart);
+      setTimerInterval(
+        setInterval(() => {
+          decreaseTimer();
+        }, 1000),
+      );
+    } else {
+      audioBeep.current.pause();
+      audioBeep.current.currentTime = 0;
+      timerInterval && clearInterval(timerInterval);
+
+      setIsStart(!isStart);
+      setTimerInterval(null);
+    }
+  };
+
+  const decreaseTimer = () => setTimeLeftInSecond((preTimeLeftInSecond) => preTimeLeftInSecond - 1);
+
+  const phaseControl = () => {
+    if (timeLeftInSecond === 0) {
+      audioBeep.current.play();
+    } else if (timeLeftInSecond === -1) {
+      if (timeLabel === 'Session') {
+        setTimeLabel('Break');
+        setTimeLeftInSecond(breakLength * 60);
+      } else {
+        setTimeLabel('Session');
+        setTimeLeftInSecond(sessionLength * 60);
+      }
+    }
+  };
+
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.ts!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing <code className={styles.code}>pages/index.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a href="https://github.com/vercel/next.js/tree/master/examples" className={styles.card}>
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>Instantly deploy your Next.js site to a public URL with Vercel.</p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+      <Times timeLabel={timeLabel} timeLeftInSecond={timeLeftInSecond} />
+      <Controller onReset={onReset} onStartStop={onStartStop} isStart={isStart} />
+      <audio id="beep" preload="auto" src="https://goo.gl/65cBl1" ref={audioBeep}></audio>
     </div>
   );
 };
