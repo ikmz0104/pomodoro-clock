@@ -21,6 +21,7 @@ export const RoundButton: FunctionComponent<RoundButtonProps> = (props) => {
         borderRadius: size / 2,
         background: !props.isStart ? theme.button.prime : theme.button.second,
         boxShadow: 'none',
+        zIndex: 10,
       }}
       onClick={props.onClick}
     >

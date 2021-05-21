@@ -11,11 +11,12 @@
   border-radius: 32% 68% 67% 33% / 31% 37% 63% 69%;
   background: linear-gradient(90deg, rgba(78, 191, 201, 1) 0%, rgba(71, 180, 238, 1) 50%, rgba(50, 137, 245, 1) 100%);
   box-shadow: 0 10px 20px 0 rgba(60, 194, 235, 0.5);
+  position: relative;
 }
 
 .times-content {
   display: inline-block;
-  margin: 0 auto;
+  margin: auto;
   width: 240px;
   height: 240px;
   margin-top: 15px;
@@ -36,4 +37,11 @@
 .time-left {
   font-size: 4.5rem;
   font-weight: 300;
+}
+
+.lottie {
+  width: 160px;
+  height: 160px;
+  position: absolute;
+  top: -15px;
 }

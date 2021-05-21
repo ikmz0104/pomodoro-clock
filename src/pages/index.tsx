@@ -4,6 +4,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import styles from '../styles/Home.module.css';
 import Times from '../components/Times';
 import Controller from '../components/Controller';
+import Bubble from '../components/Bubble';
 
 const Home: React.FC = (props) => {
   const defaultSessionLength = '1';
@@ -56,11 +57,13 @@ const Home: React.FC = (props) => {
 
   const decreaseTimer = () => setTimeLeftInSecond((preTimeLeftInSecond) => preTimeLeftInSecond - 1);
 
+  const settionFlag = () => (timeLabel === 'Session' ? true : false);
+
   const phaseControl = () => {
     if (timeLeftInSecond === 0) {
       audioBeep.current.play();
     } else if (timeLeftInSecond === -1) {
-      if (timeLabel === 'Session') {
+      if (settionFlag()) {
         setTimeLabel('Break');
         setTimeLeftInSecond(breakLength * 60);
       } else {
@@ -79,6 +82,7 @@ const Home: React.FC = (props) => {
         <Times timeLabel={timeLabel} timeLeftInSecond={timeLeftInSecond} />
         <Controller onReset={onReset} onStartStop={onStartStop} isStart={isStart} timeLabel={timeLabel} />
         <audio id="beep" preload="auto" src="https://goo.gl/65cBl1" ref={audioBeep}></audio>
+        {!settionFlag() && <Bubble />}
       </div>
     </>
   );
