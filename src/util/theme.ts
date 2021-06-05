@@ -1,3 +1,5 @@
+import { createMuiTheme } from '@material-ui/core/styles';
+
 export const theme = {
   backgroundColor: '#f9fafa',
   wrapperColor: {
@@ -5,7 +7,23 @@ export const theme = {
     break: 'radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%)',
   },
   button: {
-    prime: '#40a6f1',
+    prime: '#007FFF',
     second: '#96ddeb',
   },
 };
+
+export const muiTheme = createMuiTheme({
+  palette: {
+    type: 'light',
+    primary: {
+      main: '#007FFF',
+      dark: '#1D1D1F',
+    },
+    secondary: {
+      main: '#86868B',
+    },
+    text: {
+      primary: '#404040',
+    },
+  },
+});
