@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Head from 'next/head';
-import SettingsIcon from '@material-ui/icons/Settings';
+import Header from '../components/Header';
 import styles from '../styles/Home.module.css';
 import Times from '../components/Times';
 import Controller from '../components/Controller';
@@ -75,9 +74,7 @@ const WorkPage: React.FC = (props) => {
 
   return (
     <>
-      <div>
-        <SettingsIcon />
-      </div>
+      <Header title={timeLabel} />
       <div className={styles.container}>
         <Times timeLabel={timeLabel} timeLeftInSecond={timeLeftInSecond} />
         <Controller onReset={onReset} onStartStop={onStartStop} isStart={isStart} timeLabel={timeLabel} />
