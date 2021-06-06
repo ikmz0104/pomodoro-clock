@@ -1,13 +1,8 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import firebase from '../util/firebase';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '../components/Button';
+import CategoryList from '../components/CategoryList';
+import Header from '../components/Header';
 
 const Home: React.FC = (props) => {
   const [categories, setCategories] = useState([]);
@@ -23,7 +18,6 @@ const Home: React.FC = (props) => {
   const getUser = async (userId: any) => {
     try {
       const user = await firebase.getUserData(userId);
-      console.log(user);
     } catch (e) {
       console.error(e);
     }
@@ -33,46 +27,22 @@ const Home: React.FC = (props) => {
     try {
       const categories = await firebase.getCategories(userId);
       setCategories(categories);
-      console.log(categories);
     } catch (e) {
       console.error(e);
     }
   };
 
-  const CategoryList = () => (
-    <List>
-      {categories.map((category, i) => {
-        const router = useRouter();
-
-        const handleChange = () => {
-          router.push({
-            pathname: '/work',
-            query: { name: category.name, time: category.time },
-          });
-        };
-
-        return (
-          <ListItem key={i}>
-            <ListItemText primary={category.name} secondary={`${category.time} min`} />
-            <ListItemSecondaryAction>
-              <IconButton edge="end">
-                <Button onClick={handleChange}>開始</Button>
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        );
-      })}
-    </List>
-  );
-
   return (
     <>
-      <p>ホーム画面</p>
-      <div>
-        <p>カテゴリー</p>
-        <ul>
-          <CategoryList />
-        </ul>
+      <Header title="みーたんタイマー" />
+      <div style={{ margin: 25, marginTop: 100 }}>
+        <div style={{ marginBottom: 40 }}>
+          <p className="title">カテゴリー</p>
+          <CategoryList categories={categories} />
+        </div>
+        <div>
+          <p className="title">作業時間</p>
+        </div>
       </div>
     </>
   );

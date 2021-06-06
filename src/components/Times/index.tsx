@@ -16,17 +16,18 @@ const formatTime = (timeLeftInSecond: number) => {
 
 type PropsOptional = {
   timeLabel: string;
+  settion: boolean;
   timeLeftInSecond: number;
 };
 
-const Times: React.FC<PropsOptional> = ({ timeLabel, timeLeftInSecond }) => {
+const Times: React.FC<PropsOptional> = ({ timeLabel, settion, timeLeftInSecond }) => {
   return (
     <div className={styles.times}>
       <div
         className={styles['times-content-wrapper']}
-        style={{ background: timeLabel === 'Session' ? theme.wrapperColor.settion : theme.wrapperColor.break }}
+        style={{ background: settion ? theme.wrapperColor.settion : theme.wrapperColor.break }}
       >
-        {timeLabel === 'Session' ? ( //Session中の表示
+        {settion ? ( //Session中の表示
           <div className={styles['times-content']}>
             <label id="timer-label" className={styles['timer-label']}>
               {timeLabel}

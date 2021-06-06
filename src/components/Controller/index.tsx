@@ -9,10 +9,9 @@ type PropsOptional = {
   onStartStop: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onReset: (event: React.MouseEvent<HTMLButtonElement>) => void;
   isStart: boolean;
-  timeLabel: string;
 };
 
-const Controller: React.FC<PropsOptional> = ({ onStartStop, onReset, isStart, timeLabel }) => {
+const Controller: React.FC<PropsOptional> = ({ onStartStop, onReset, isStart }) => {
   const startIcon = <PlayArrowOutlinedIcon />;
   const pauseIcon = <PauseOutlinedIcon />;
   return (
