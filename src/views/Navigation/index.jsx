@@ -27,18 +27,14 @@ export default function SimpleBottomNavigation() {
   const router = useRouter();
 
   const handleChange = (event, newValue) => {
-    if (newValue === 'profile') {
-      window.location.href = 'https://liff.line.me/1654158503-QA41dovp';
-    } else {
-      router.push(`${newValue}`);
-    }
+    router.push(`${newValue}`);
     setValue(newValue);
   };
 
   return (
     <BottomNavigation value={value} onChange={handleChange} showLabels className={styles.root}>
       {Navigations.map((item) => (
-        <BottomNavigationAction label={item.label} value={item.value} icon={item.icon} />
+        <BottomNavigationAction label={item.label} value={item.value} icon={item.icon} key={item.value} />
       ))}
     </BottomNavigation>
   );
