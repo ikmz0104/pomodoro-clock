@@ -1,9 +1,9 @@
 body {
   font: normal normal normal 1rem/1.6 Nunito Sans, Helvetica, Arial, sans-serif;
-  color: #585858;
+  color: #4b5563;
   background-color: #ffffff;
   max-width: 500px;
-  margin: 0;
+  margin: 0 auto;
 }
 
 a {
@@ -25,4 +25,8 @@ a {
 .content {
   margin: 25px;
   margin-top: 100px;
+}
+
+.modal_text {
+  text-align: center;
 }

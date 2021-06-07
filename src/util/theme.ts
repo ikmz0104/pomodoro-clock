@@ -16,7 +16,7 @@ export const muiTheme = createMuiTheme({
   palette: {
     type: 'light',
     primary: {
-      main: '#007FFF',
+      main: '#3B82F6',
       dark: '#1D1D1F',
     },
     secondary: {
@@ -24,6 +24,11 @@ export const muiTheme = createMuiTheme({
     },
     text: {
       primary: '#404040',
+    },
+  },
+  typography: {
+    button: {
+      borderRadius: 7,
     },
   },
 });
