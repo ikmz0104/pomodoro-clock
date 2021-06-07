@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "src",
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -14,6 +15,6 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/views/Navigation.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/views/Navigation.jsx", "src"],
   "exclude": ["node_modules"]
 }

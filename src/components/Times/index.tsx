@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Lottie from 'react-lottie-player';
+import breaklottie from 'util/lottie/coffee_break.json';
 import styles from './index.module.css';
-import { theme } from '../../util/theme';
-import breaklottie from '../../util/lottie/coffee_break.json';
+import { theme } from 'util/theme';
 
 const formatTime = (timeLeftInSecond: number) => {
   let minute: any = Math.floor(timeLeftInSecond / 60);

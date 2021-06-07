@@ -21,3 +21,8 @@ a {
   font-weight: bold;
   letter-spacing: 3px;
 }
+
+.content {
+  margin: 25px;
+  margin-top: 100px;
+}

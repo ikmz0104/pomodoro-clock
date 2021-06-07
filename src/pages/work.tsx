@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Header from '../components/Header';
-import styles from '../styles/Work.module.css';
-import Times from '../components/Times';
-import Controller from '../components/Controller';
-import Bubble from '../components/Bubble';
+import Header from 'components/Header';
+import Times from 'components/Times';
+import Controller from 'components/Controller';
+import Bubble from 'components/Bubble';
+import styles from 'styles/Work.module.css';
 
 const WorkPage: React.FC = (props) => {
   const router: any = useRouter();

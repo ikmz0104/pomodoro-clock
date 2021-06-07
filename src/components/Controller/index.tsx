@@ -1,9 +1,8 @@
 import React from 'react';
 import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import PauseOutlinedIcon from '@material-ui/icons/PauseOutlined';
-import styles from './index.module.css';
-import CustomButton from '../Button';
 import { RoundButton } from '../RoundButton';
+import styles from './index.module.css';
 
 type PropsOptional = {
   onStartStop: (event: React.MouseEvent<HTMLButtonElement>) => void;

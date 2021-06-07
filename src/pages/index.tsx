@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import firebase from '../util/firebase';
-import CategoryList from '../components/CategoryList';
-import Header from '../components/Header';
+import firebase from 'util/firebase';
+import CategoryList from 'components/CategoryList';
+import Header from 'components/Header';
 
 const Home: React.FC = (props) => {
   const [categories, setCategories] = useState([]);
@@ -35,7 +35,7 @@ const Home: React.FC = (props) => {
   return (
     <>
       <Header title="みーたんタイマー" />
-      <div style={{ margin: 25, marginTop: 100 }}>
+      <div className="content">
         <div style={{ marginBottom: 40 }}>
           <p className="title">カテゴリー</p>
           <CategoryList categories={categories} />

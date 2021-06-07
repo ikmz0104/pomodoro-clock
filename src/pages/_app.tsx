@@ -1,8 +1,8 @@
 import React from 'react';
-import '../styles/globals.css';
-import SimpleBottomNavigation from '../views/Navigation';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { muiTheme } from '../util/theme';
+import SimpleBottomNavigation from 'views/Navigation';
+import { muiTheme } from 'util/theme';
+import 'styles/globals.css';
 
 interface Props {
   pageProps: any;

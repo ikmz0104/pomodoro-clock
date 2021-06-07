@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Button } from '@material-ui/core';
-import { theme } from '../../util/theme';
+import { theme } from 'util/theme';
 
 type RoundButtonProps = {
   isStart: boolean;
