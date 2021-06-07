@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Button from '@material-ui/core/Button';
 import Header from 'components/Header';
 import Times from 'components/Times';
 import Controller from 'components/Controller';
 import Bubble from 'components/Bubble';
+import TransitionsModal from 'components/Modal';
 import styles from 'styles/Work.module.css';
+import { VerificationModal } from 'views/VerificationModal';
 
 const WorkPage: React.FC = (props) => {
   const router: any = useRouter();
@@ -16,12 +19,15 @@ const WorkPage: React.FC = (props) => {
   const [name, setName] = useState('Session');
   const [defaultSessionLength, setDefaultSessionLength] = useState('25');
   const [isStart, setIsStart] = useState(false);
+  const [pause, setPause] = useState(false);
   const [timeLabel, setTimeLabel] = useState(name);
   const [settion, setSettion] = useState(true);
   const [timeLeftInSecond, setTimeLeftInSecond] = useState(Number.parseInt(defaultSessionLength, 10) * 60);
   const [breakLength, setBreakLength] = useState(Number.parseInt(defaultBreakLength, 10));
   const [sessionLength, setSessionLength] = useState(Number.parseInt(defaultSessionLength, 10));
   const [timerInterval, setTimerInterval] = useState(null);
+  //modal
+  const [open, setOpen] = useState(false);
 
   //最初のレンダリング時
   useEffect(() => {
@@ -51,6 +57,8 @@ const WorkPage: React.FC = (props) => {
     setIsStart(false);
     setTimerInterval(null);
     setSettion(true);
+    setOpen(false);
+    setPause(false);
 
     audioBeep.current.pause();
     audioBeep.current.currentTime = 0;
@@ -60,6 +68,7 @@ const WorkPage: React.FC = (props) => {
   const onStartStop = () => {
     if (!isStart) {
       setIsStart(!isStart);
+      setPause(false);
       setTimerInterval(
         setInterval(() => {
           decreaseTimer();
@@ -70,6 +79,7 @@ const WorkPage: React.FC = (props) => {
       audioBeep.current.currentTime = 0;
       timerInterval && clearInterval(timerInterval);
 
+      setPause(true);
       setIsStart(!isStart);
       setTimerInterval(null);
     }
@@ -93,6 +103,15 @@ const WorkPage: React.FC = (props) => {
     }
   };
 
+  //Modal
+  const handleModalOpen = () => {
+    setOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <Header title={timeLabel} />
@@ -102,10 +121,11 @@ const WorkPage: React.FC = (props) => {
           <p>{defaultSessionLength}min</p>
         </div>
         <Times settion={settion} timeLeftInSecond={timeLeftInSecond} timeLabel={timeLabel} />
-        <Controller onReset={onReset} onStartStop={onStartStop} isStart={isStart} />
+        <Controller onReset={onReset} onStartStop={onStartStop} isStart={isStart} pause={pause} handleModalOpen={handleModalOpen} />
         <audio id="beep" preload="auto" src="https://goo.gl/65cBl1" ref={audioBeep}></audio>
         {!settion && <Bubble />}
       </div>
+      <VerificationModal open={open} handleModalClose={handleModalClose} onReset={onReset} name={timeLabel} />
     </>
   );
 };
