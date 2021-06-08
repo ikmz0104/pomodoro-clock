@@ -26,23 +26,23 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 ## DB構造
 users/{userId}
-	- name
+ - name
 
 categories/{categoryId}
-	- category_name
+  - category_name
 	- time
 	- userRef
 
 users/{userId}/record/{id}
-	- timestamp
+  - timestamp
 	- time
 	- categoryRef
 
 images/{imageId}
-	-image_number
-	-image_extension
+  - image_number
+	- image_extension
 
 sounds/{soundId}
-	-sound_number
-	-sound_extension
+  - sound_number
+  - sound_extension
 
