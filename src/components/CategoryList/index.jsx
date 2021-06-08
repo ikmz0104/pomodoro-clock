@@ -25,7 +25,7 @@ const CategoryList = ({ categories }) => (
           <ListItem key={i} button onClick={handleChange}>
             <ListItemText primary={category.name} />
             <ListItemSecondaryAction>
-              <IconButton edge="end" style={{ background: '#24CE85', padding: 5 }} onClick={handleChange}>
+              <IconButton edge="end" style={{ background: '#44AEEF', padding: 5 }} onClick={handleChange}>
                 <PlayArrowRoundedIcon style={{ color: 'white' }} />
               </IconButton>
             </ListItemSecondaryAction>
