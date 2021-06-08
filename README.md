@@ -24,7 +24,7 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 ## 基本設計
 [画面レイアウト-Figma](https://www.figma.com/file/SqXoA0G5U9z1cfoYVJBg1e/%E3%81%BF%E3%83%BC%E3%81%9F%E3%82%93%E3%82%BF%E3%82%A4%E3%83%9E%E3%83%BC?node-id=0%3A1 "Figma")
 
-## DB構造
+## DB設計
 + users/{userId}
   - name
 
