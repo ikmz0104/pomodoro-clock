@@ -30,3 +30,21 @@ a {
 .modal_text {
   text-align: center;
 }
+
+/* mitan_bgimage_test */
+.bg_test-text {
+  border:  solid 1px;
+  display:  inline-block;
+  padding: 10px 20px;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.bg_test {
+  text-align:  center;
+  padding:  150px;
+  border: solid 2px;
+  height: 800px;
+  background-image: url(../images/mitantest.png);
+}
+
+
+

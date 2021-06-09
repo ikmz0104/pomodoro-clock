@@ -16,7 +16,7 @@ const WorkPage: React.FC = (props) => {
   const audioBeep: any = React.createRef();
 
   //state
-  const [name, setName] = useState('Session');
+  const [name, setName] = useState('みーたん！');
   const [defaultSessionLength, setDefaultSessionLength] = useState('25');
   const [isStart, setIsStart] = useState(false);
   const [pause, setPause] = useState(false);
@@ -126,6 +126,10 @@ const WorkPage: React.FC = (props) => {
         {!settion && <Bubble />}
       </div>
       <VerificationModal open={open} handleModalClose={handleModalClose} onReset={onReset} name={timeLabel} />
+      {/* mitan_bgimage_test */}
+      <div className="bg_test">
+        <div className="bg_test-text">みーたんもう少し上や！</div>
+      </div>
     </>
   );
 };
