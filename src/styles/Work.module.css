@@ -1,11 +1,16 @@
 .container {
-  margin: 100px 25px 25px 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
   padding: 0 0.5rem;
   /* display: flex; */
   /* flex-direction: column; */
   justify-content: center;
   align-items: center;
-  
+  height: 70vh;
 }
 
 .main {
@@ -126,4 +131,18 @@
   margin-bottom: 20px;
   background: #f0f8ff;
   border-radius: 10px;
+}
+
+.label_break {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 40px;
+  margin: auto;
+  background: #f0f8ff;
+  border-radius: 10px;
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

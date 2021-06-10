@@ -16,18 +16,15 @@ const formatTime = (timeLeftInSecond: number) => {
 
 type PropsOptional = {
   timeLabel: string;
-  settion: boolean;
+  session: boolean;
   timeLeftInSecond: number;
 };
 
-const Times: React.FC<PropsOptional> = ({ timeLabel, settion, timeLeftInSecond }) => {
+const Times: React.FC<PropsOptional> = ({ timeLabel, session, timeLeftInSecond }) => {
   return (
     <div className={styles.times}>
-      <div
-        className={styles['times-content-wrapper']}
-        style={{ background: settion ? theme.wrapperColor.settion : theme.wrapperColor.break }}
-      >
-        {settion ? ( //Session中の表示
+      <div className={session ? styles['times-content-wrapper'] : styles['break_time-content-wrapper']}>
+        {session ? ( //Session中の表示
           <div className={styles['times-content']}>
             <label id="timer-label" className={styles['timer-label']}>
               {timeLabel}
@@ -37,9 +34,9 @@ const Times: React.FC<PropsOptional> = ({ timeLabel, settion, timeLeftInSecond }
             </span>
           </div>
         ) : (
-          <div className={styles['times-content']}>
-            <Lottie loop animationData={breaklottie} play className={styles.lottie} />
-            <span id="time-left" className={styles['time-left']}>
+          //休憩中
+          <div className={styles['break_time-content']}>
+            <span id="time-left" className={styles['break_time-left']}>
               {formatTime(timeLeftInSecond)}
             </span>
           </div>

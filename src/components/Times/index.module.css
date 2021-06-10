@@ -15,6 +15,15 @@
   position: relative;
 }
 
+.break_time-content-wrapper {
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+  background: radial-gradient(circle, rgba(238, 174, 202, 0.575) 0%, rgba(148, 188, 233, 0.623) 100%);
+  /* box-shadow: 0 10px 20px 0 rgba(60, 194, 235, 0.5); */
+  position: relative;
+}
+
 .times-content {
   display: inline-block;
   margin: auto;
@@ -30,6 +39,21 @@
   background: #fff;
 }
 
+.break_time-content {
+  display: inline-block;
+  margin: auto;
+  width: 180px;
+  height: 180px;
+  margin-top: 10px;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.555);
+}
+
 .timer-label {
   font-size: 1.1rem;
   font-weight: 500;
@@ -37,6 +61,11 @@
 
 .time-left {
   font-size: 4.5rem;
+  font-weight: 300;
+}
+
+.break_time-left {
+  font-size: 2.5rem;
   font-weight: 300;
 }
 

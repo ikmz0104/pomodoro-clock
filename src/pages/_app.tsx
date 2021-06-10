@@ -16,7 +16,6 @@ export default class App extends React.Component<Props> {
     return (
       <ThemeProvider theme={muiTheme}>
         <Component {...pageProps} />
-        <SimpleBottomNavigation />
       </ThemeProvider>
     );
   }
