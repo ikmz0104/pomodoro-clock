@@ -22,11 +22,12 @@ $ git branch feature/UI
 $ git checkout feature/UI
 
 ~/pomodoro-clock (feature/UI)
-$ ^C
+git add.
+git commit -m "[add] xxx"
+git push --set-upstream origin feature/UI
 ```
 
 At the end, To share work, doing add, commit, push and  make a pull request and merge
-
 
 ## Getting Started
 
