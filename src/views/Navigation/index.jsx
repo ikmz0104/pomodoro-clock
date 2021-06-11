@@ -5,9 +5,11 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import CreateRoundedIcon from '@material-ui/icons/CreateRounded';
+//https://material-ui.com/components/material-icons/
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
 const home_icon = <HomeRoundedIcon color="primary" fontSize="large" />;
-const work_icon = <CreateRoundedIcon color="primary" fontSize="large" />;
+const work_icon = <AccessTimeIcon color="primary" fontSize="large" />;
 
 const Navigations = [
   {
