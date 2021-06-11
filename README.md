@@ -25,7 +25,7 @@ $ git checkout feature/UI
 $ ^C
 ```
 
-At the end, To share work, make a pull request and merge
+At the end, To share work, doing add, commit, push and  make a pull request and merge
 
 
 ## Getting Started
