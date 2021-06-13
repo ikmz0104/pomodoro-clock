@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import firebase from 'util/firebase';
 import CategoryList from 'components/CategoryList';
 import Header from 'components/Header';
+import Graph from '../Graph';
 
 const Home: React.FC = (props) => {
   const [categories, setCategories] = useState([]);
@@ -40,8 +41,19 @@ const Home: React.FC = (props) => {
           <p className="title">カテゴリー</p>
           <CategoryList categories={categories} />
         </div>
-        <div>
+        <div style={{ marginBottom: 40 }}>
           <p className="title">作業時間</p>
+          <p>グラフもう少しかっこよく</p>
+          <React.StrictMode>
+            <Graph />
+          </React.StrictMode>
+        </div>
+        <div style={{ marginBottom: 40 }}>
+          <p className="title">カレンダー</p>
+          <p>ここにカレンダーいれてえ～</p>
+          <React.StrictMode>
+            <Graph />
+          </React.StrictMode>
         </div>
       </div>
     </>

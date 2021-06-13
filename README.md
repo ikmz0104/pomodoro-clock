@@ -13,21 +13,25 @@ Second, Open the folder under the clone with an editor and create an `.env.local
 
 ### Additional preparation...(You can skip it)
 Third, It's up to you, but to avoid work conflicts, derive from your development branch to your own branch.
-
+#### Create a new branch
 ```
 ~/pomodoro-clock (development)
-$ git branch feature/UI
-
+$ git branch branchname
+```
+#### Move to new branch
+```
 ~/pomodoro-clock (development)
-$ git checkout feature/UI
-
-~/pomodoro-clock (feature/UI)
+$ git checkout branchname
+```
+#### Preparing a pull request
+```
+~/pomodoro-clock (branchname)
 git add.
 git commit -m "[add] xxx"
-git push --set-upstream origin feature/UI
+git push --set-upstream origin branchname
 ```
 
-At the end, To share work, doing add, commit, push and  make a pull request and merge
+At the end, To share work, make a pull request and merge.
 
 ## Getting Started
 
