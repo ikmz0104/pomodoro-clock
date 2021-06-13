@@ -19,7 +19,6 @@ const SettingPage: React.FC = (props) => {
         <div>
           <p className="title">休憩時間</p>
         </div>
-        <Button>完了</Button>
       </div>
     </>
   );
