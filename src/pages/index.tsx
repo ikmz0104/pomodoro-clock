@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import firebase from 'util/firebase';
 import CategoryList from 'components/CategoryList';
 import Header from 'components/Header';
-import Graph from '../Graph';
+import Graph from 'views/Graph/Graph';
 
 const Home: React.FC = (props) => {
   const [categories, setCategories] = useState([]);
