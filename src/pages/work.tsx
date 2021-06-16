@@ -90,7 +90,6 @@ const WorkPage: React.FC = (props) => {
   const phaseControl = () => {
     if (timeLeftInSecond === 0) {
       audioBeep.current.play();
-    } else if (timeLeftInSecond === -1) {
       if (session) {
         setTimeLabel('休憩');
         setSession(false);
