@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import firebase from 'util/firebase';
 import CategoryList from 'components/CategoryList';
 import Header from 'components/Header';
-import Graph from 'views/Graph/Graph';
+
+//ApexCharts読み込むのにNext.jsで必要な設定
+const DynamicGraphComponentWithNoSSR = dynamic(() => import('../views/Graph/Graph'), { ssr: false });
 
 const Home: React.FC = (props) => {
   const [categories, setCategories] = useState([]);
@@ -45,14 +48,14 @@ const Home: React.FC = (props) => {
           <p className="title">作業時間</p>
           <p>グラフもう少しかっこよく</p>
           <React.StrictMode>
-            <Graph />
+            <DynamicGraphComponentWithNoSSR />
           </React.StrictMode>
         </div>
         <div style={{ marginBottom: 40 }}>
           <p className="title">カレンダー</p>
           <p>ここにカレンダーいれてえ～</p>
           <React.StrictMode>
-            <Graph />
+            <DynamicGraphComponentWithNoSSR />
           </React.StrictMode>
         </div>
       </div>
