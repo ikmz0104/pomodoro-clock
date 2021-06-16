@@ -28,7 +28,7 @@ class Firebase {
     try {
       await ref.get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          data.push(doc.data());
+          data.push({ ...doc.data(), id: doc.id });
         });
       });
       return data;
