@@ -64,6 +64,14 @@ class Firebase {
       throw e;
     }
   };
+
+  createCategory = async (data) => {
+    try {
+      await this.categories.doc().set(data);
+    } catch (e) {
+      throw e;
+    }
+  };
 }
 
 const Fire = new Firebase();

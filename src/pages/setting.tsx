@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import firebase from 'util/firebase';
 import Header from 'components/Header';
 import { Button } from '@material-ui/core';
+import { CategoryModal } from 'views/CategoryModal';
 
 type PropsOptional = {
   onValueChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -25,14 +26,19 @@ const CategoryRadio: React.FC<PropsOptional> = ({ onValueChange, name, selectedO
 const SettingPage: React.FC = (props) => {
   const router = useRouter();
 
+  //state
+  const [userId, setUserId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [selectedOption, setSelectedOption] = useState({ name: '', time: 0, id: '', userId: '' });
   const [time, setTime] = useState(25);
+  //modal state
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       const userId = await firebase.getUserId(); //テストId
-      await Promise.all([getCategories(userId)]);
+      setUserId(userId);
+      await getCategories(userId);
     }
     fetchData();
   }, []);
@@ -66,6 +72,20 @@ const SettingPage: React.FC = (props) => {
     router.back();
   };
 
+  //Modal
+  const handleModalClose = () => {
+    setOpen(false);
+  };
+
+  const handleModalChange = async (name, time) => {
+    if (userId) {
+      const categoryData = { name: name, time: time, userId: userId };
+      await firebase.createCategory(categoryData);
+      await getCategories(userId);
+    }
+    setOpen(false);
+  };
+
   return (
     <>
       <Header title="設定" />
@@ -80,6 +100,7 @@ const SettingPage: React.FC = (props) => {
               selectedOption={selectedOption.name}
             />
           ))}
+          <Button onClick={() => setOpen(true)}>カテゴリーの追加</Button>
         </div>
         <div>
           <p className="title">作業時間</p>
@@ -90,6 +111,7 @@ const SettingPage: React.FC = (props) => {
         </Button>
         <p>デザインまだ！</p>
       </div>
+      <CategoryModal open={open} handleModalClose={handleModalClose} handleModalChange={handleModalChange} />
     </>
   );
 };
