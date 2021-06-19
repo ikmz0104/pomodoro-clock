@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Button from '@material-ui/core/Button';
 import Header from 'components/Header';
 import Times from 'components/Times';
 import Controller from 'components/Controller';
-import Bubble from 'components/Bubble';
-import TransitionsModal from 'components/Modal';
+import firebase from 'util/firebase';
 import styles from 'styles/Work.module.css';
 import { VerificationModal } from 'views/VerificationModal';
 
@@ -31,23 +29,29 @@ const WorkPage: React.FC = (props) => {
 
   //最初のレンダリング時
   useEffect(() => {
+    async function fetchData(id) {
+      await Promise.all([getCategory(id)]);
+    }
     if (!router.isReady) {
       return;
     }
-    if (router.query.name) {
-      setName(router.query.name);
-      setTimeLabel(router.query.name);
-    }
-    if (router.query.time) {
-      setDefaultSessionLength(router.query.time);
-      setTimeLeftInSecond(Number.parseInt(router.query.time, 10) * 60);
-      setSessionLength(Number.parseInt(router.query.time, 10));
+    if (router.query.id) {
+      fetchData(router.query.id);
     }
   }, [router.isReady]);
 
   useEffect(() => {
     phaseControl();
   }, [timeLeftInSecond]);
+
+  const getCategory = async (id) => {
+    const category = await firebase.getCategory(id);
+    setName(category.name);
+    setTimeLabel(category.name);
+    setDefaultSessionLength(category.time);
+    setTimeLeftInSecond(Number.parseInt(category.time, 10) * 60);
+    setSessionLength(Number.parseInt(category.time, 10));
+  };
 
   const onReset = () => {
     setBreakLength(Number.parseInt(defaultBreakLength, 10));
