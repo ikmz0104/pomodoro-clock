@@ -6,6 +6,10 @@ class Firebase {
     this.categories = db.collection('categories');
   }
 
+  getUserId = async () => {
+    return '12345678'; //ログイン認証するまでの仮
+  };
+
   getUserData = async (userId) => {
     let userData = {};
     const ref = this.users.doc(userId);
@@ -32,6 +36,30 @@ class Firebase {
         });
       });
       return data;
+    } catch (e) {
+      throw e;
+    }
+  };
+
+  getCategory = async (id) => {
+    let data = {};
+    const ref = this.categories.doc(id);
+    try {
+      await ref.get().then((doc) => {
+        if (doc.exists) {
+          data.id = doc.id;
+          data = doc.data();
+        }
+      });
+      return data;
+    } catch (e) {
+      throw e;
+    }
+  };
+
+  setCategory = async (id, data) => {
+    try {
+      await this.categories.doc(id).update(data);
     } catch (e) {
       throw e;
     }
