@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import firebase from 'util/firebase';
 import Header from 'components/Header';
 import { Button } from '@material-ui/core';
+import { CategoryModal } from 'views/CategoryModal';
 
 type PropsOptional = {
   onValueChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -22,31 +24,30 @@ const CategoryRadio: React.FC<PropsOptional> = ({ onValueChange, name, selectedO
 };
 
 const SettingPage: React.FC = (props) => {
+  const router = useRouter();
+
+  //state
+  const [userId, setUserId] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [selectedOption, setSelectedOption] = useState('React');
+  const [selectedOption, setSelectedOption] = useState({ name: '', time: 0, id: '', userId: '' });
   const [time, setTime] = useState(25);
+  //modal state
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
-      const userId = '12345678'; //テストId
-      await Promise.all([getUser(userId), getCategories(userId)]);
+      const userId = await firebase.getUserId(); //テストId
+      setUserId(userId);
+      await getCategories(userId);
     }
     fetchData();
   }, []);
-
-  const getUser = async (userId: any) => {
-    try {
-      const user = await firebase.getUserData(userId);
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
   const getCategories = async (userId: any) => {
     try {
       const categories = await firebase.getCategories(userId);
       setCategories(categories);
-      setSelectedOption(categories[0].name);
+      setSelectedOption(categories[0]);
       setTime(categories[0].time);
     } catch (e) {
       console.error(e);
@@ -54,12 +55,35 @@ const SettingPage: React.FC = (props) => {
   };
 
   const onValueChange = (category) => {
-    setSelectedOption(category.name);
+    setSelectedOption(category);
     setTime(category.time);
   };
 
   const handleChange = (event) => {
     setTime(event.target.value);
+    const newSelectedOption = selectedOption;
+    newSelectedOption.time = Number(event.target.value);
+    setSelectedOption(newSelectedOption);
+  };
+
+  const handleSettingChange = async () => {
+    const data = { name: selectedOption.name, time: selectedOption.time, userId: selectedOption.userId };
+    await firebase.setCategory(selectedOption.id, data);
+    router.back();
+  };
+
+  //Modal
+  const handleModalClose = () => {
+    setOpen(false);
+  };
+
+  const handleModalChange = async (name, time) => {
+    if (userId) {
+      const categoryData = { name: name, time: time, userId: userId };
+      await firebase.createCategory(categoryData);
+      await getCategories(userId);
+    }
+    setOpen(false);
   };
 
   return (
@@ -73,19 +97,21 @@ const SettingPage: React.FC = (props) => {
               key={category.id}
               name={category.name}
               onValueChange={() => onValueChange(category)}
-              selectedOption={selectedOption}
+              selectedOption={selectedOption.name}
             />
           ))}
+          <Button onClick={() => setOpen(true)}>カテゴリーの追加</Button>
         </div>
         <div>
           <p className="title">作業時間</p>
           <input type="number" min="1" max="120" step="1" value={time} required onChange={handleChange} />
         </div>
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={handleSettingChange}>
           完了
         </Button>
         <p>デザインまだ！</p>
       </div>
+      <CategoryModal open={open} handleModalClose={handleModalClose} handleModalChange={handleModalChange} />
     </>
   );
 };

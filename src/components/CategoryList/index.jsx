@@ -16,7 +16,7 @@ const CategoryList = ({ categories }) => (
       const handleChange = () => {
         router.push({
           pathname: '/work',
-          query: { name: category.name, time: category.time },
+          query: { id: category.id },
         });
       };
 
