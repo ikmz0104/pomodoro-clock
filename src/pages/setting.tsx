@@ -4,22 +4,30 @@ import { useRouter } from 'next/router';
 import firebase from 'util/firebase';
 import Header from 'components/Header';
 import { Button } from '@material-ui/core';
+import ListItem from '@material-ui/core/ListItem';
+import List from '@material-ui/core/List';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { CategoryModal } from 'views/CategoryModal';
 
 type PropsOptional = {
-  onValueChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onValueChange: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   name: string;
-  selectedOption: string;
+  time: number;
 };
 
-const CategoryRadio: React.FC<PropsOptional> = ({ onValueChange, name, selectedOption }) => {
+const CategoryList: React.FC<PropsOptional> = ({ onValueChange, name, time }) => {
   return (
-    <div className="radio">
-      <label>
-        <input type="radio" value={name} checked={selectedOption === name} onChange={onValueChange} />
-        {name}
-      </label>
-    </div>
+    <ListItem button onClick={onValueChange}>
+      <ListItemText primary={name} secondary={time ? `${time}分` : null} />
+      <ListItemSecondaryAction>
+        <IconButton edge="end" aria-label="delete">
+          <DeleteIcon />
+        </IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
   );
 };
 
@@ -30,7 +38,6 @@ const SettingPage: React.FC = (props) => {
   const [userId, setUserId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [selectedOption, setSelectedOption] = useState({ name: '', time: 0, id: '', userId: '' });
-  const [time, setTime] = useState(25);
   //modal state
   const [open, setOpen] = useState(false);
 
@@ -47,28 +54,22 @@ const SettingPage: React.FC = (props) => {
     try {
       const categories = await firebase.getCategories(userId);
       setCategories(categories);
-      setSelectedOption(categories[0]);
-      setTime(categories[0].time);
     } catch (e) {
       console.error(e);
     }
   };
 
-  const onValueChange = (category) => {
+  const handleListItemClick = (category: any) => {
     setSelectedOption(category);
-    setTime(category.time);
+    setOpen(true);
   };
 
-  const handleChange = (event) => {
-    setTime(event.target.value);
-    const newSelectedOption = selectedOption;
-    newSelectedOption.time = Number(event.target.value);
-    setSelectedOption(newSelectedOption);
+  const handleAddCategoryClick = () => {
+    setSelectedOption(null);
+    setOpen(true);
   };
 
-  const handleSettingChange = async () => {
-    const data = { name: selectedOption.name, time: selectedOption.time, userId: selectedOption.userId };
-    await firebase.setCategory(selectedOption.id, data);
+  const handleBack = async () => {
     router.back();
   };
 
@@ -79,9 +80,17 @@ const SettingPage: React.FC = (props) => {
 
   const handleModalChange = async (name, time) => {
     if (userId) {
-      const categoryData = { name: name, time: time, userId: userId };
-      await firebase.createCategory(categoryData);
-      await getCategories(userId);
+      if (selectedOption) {
+        //カテゴリーの編集
+        const categoryData = { name: name, time: time, userId: userId };
+        await firebase.updateCategory(selectedOption.id, categoryData);
+        await getCategories(userId);
+      } else {
+        //カテゴリーの追加
+        const categoryData = { name: name, time: time, userId: userId };
+        await firebase.createCategory(categoryData);
+        await getCategories(userId);
+      }
     }
     setOpen(false);
   };
@@ -92,26 +101,25 @@ const SettingPage: React.FC = (props) => {
       <div className="content">
         <div style={{ marginBottom: 40 }}>
           <p className="title">カテゴリー</p>
-          {categories.map((category) => (
-            <CategoryRadio
-              key={category.id}
-              name={category.name}
-              onValueChange={() => onValueChange(category)}
-              selectedOption={selectedOption.name}
-            />
-          ))}
-          <Button onClick={() => setOpen(true)}>カテゴリーの追加</Button>
+          <List dense={true}>
+            {categories.map((category) => (
+              <CategoryList
+                key={category.id}
+                name={category.name}
+                time={category.time}
+                onValueChange={() => handleListItemClick(category)}
+              />
+            ))}
+          </List>
+          <Button variant="outlined" onClick={handleAddCategoryClick}>
+            カテゴリーの追加
+          </Button>
         </div>
-        <div>
-          <p className="title">作業時間</p>
-          <input type="number" min="1" max="120" step="1" value={time} required onChange={handleChange} />
-        </div>
-        <Button variant="contained" color="primary" onClick={handleSettingChange}>
-          完了
+        <Button variant="contained" color="primary" onClick={handleBack}>
+          戻る
         </Button>
-        <p>デザインまだ！</p>
       </div>
-      <CategoryModal open={open} handleModalClose={handleModalClose} handleModalChange={handleModalChange} />
+      <CategoryModal open={open} handleModalClose={handleModalClose} handleModalChange={handleModalChange} category={selectedOption} />
     </>
   );
 };
