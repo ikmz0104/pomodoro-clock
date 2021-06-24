@@ -121,7 +121,9 @@ const Home: React.FC = (props) => {
               { date: '2022-01-18', someAttr: 'foo' },
               { date: '2022-01-19', someAttr: 'foo' },
               { date: '2022-01-20', someAttr: 'foo' },
-              { date: '2022-01-22', someAttr: 'foo' },// ...and so on
+              { date: '2022-01-22', someAttr: 'foo' },
+              { date: '2022-01-22', someAttr: 'foo' },
+              // ...and so on
               // { date: '2021-06-05', someAttr: 'baz' },
               // { date: '2021-06-10', someAttr: 'foo' },
               // { date: '2021-06-15', someAttr: 'bar' },
