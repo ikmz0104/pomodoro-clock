@@ -18,7 +18,7 @@ type PropsOptional = {
   category: CategoryProps;
 };
 
-const CategoryList: React.memo<PropsOptional> = ({ onValueChange, category, handleListItemDelete }) => {
+const CategoryList = React.memo<PropsOptional>(({ onValueChange, category, handleListItemDelete }) => {
   return (
     <ListItem button onClick={onValueChange}>
       <ListItemText primary={category.name} secondary={category.time ? `${category.time}分` : null} />
@@ -29,7 +29,7 @@ const CategoryList: React.memo<PropsOptional> = ({ onValueChange, category, hand
       </ListItemSecondaryAction>
     </ListItem>
   );
-};
+});
 
 const SettingPage: React.FC = () => {
   const router = useRouter();
