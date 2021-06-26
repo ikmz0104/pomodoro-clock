@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
@@ -15,28 +15,46 @@ const useStyles = makeStyles({
   },
 });
 
-export const CategoryModal = ({ open, handleModalClose, handleModalChange }) => {
+export const CategoryModal = ({ open, handleModalClose, handleModalChange, category }) => {
   const classes = useStyles();
-  const [name, setName] = useState('');
+  const [name, setName] = useState(null);
   const [time, setTime] = useState(0);
   const [nameError, setNameError] = useState(false);
   const [timeError, setTimeError] = useState(false);
 
+  useEffect(() => {
+    if (category) {
+      setName(category.name);
+      setTime(category.time);
+    }
+  }, [category]);
+
   const handleChange = () => {
     setNameError(false);
     setTimeError(false);
-    if (name === '') {
+
+    if (!name) {
       setNameError(true);
-    } else if (time <= 0) {
+    } else if (time <= 0 || !time) {
       setTimeError(true);
     } else {
       handleModalChange(name, time);
+      setName(null);
+      setTime(0);
     }
   };
 
+  const handleClose = () => {
+    setNameError(false);
+    setTimeError(false);
+    setName(null);
+    setTime(0);
+    handleModalClose();
+  };
+
   return (
-    <TransitionsModal open={open} handleClose={handleModalClose}>
-      <h4 className="modal_text">カテゴリーの追加</h4>
+    <TransitionsModal open={open} handleClose={handleClose}>
+      <h4 className="modal_text">{category ? 'カテゴリーの編集' : 'カテゴリーの追加'}</h4>
       <TextField
         id="name"
         label="カテゴリー名"
@@ -50,6 +68,7 @@ export const CategoryModal = ({ open, handleModalClose, handleModalChange }) => 
         autoFocus
         variant="outlined"
         onChange={(event) => setName(event.target.value)}
+        defaultValue={category ? category.name : null}
       />
       <TextField
         id="time"
@@ -67,14 +86,21 @@ export const CategoryModal = ({ open, handleModalClose, handleModalChange }) => 
         }}
         variant="outlined"
         onChange={(event) => setTime(Number(event.target.value))}
+        defaultValue={category ? category.time : null}
       />
       <div style={{ textAlign: 'center' }}>
-        <Button variant="contained" className={classes.cancel} onClick={handleModalClose}>
+        <Button variant="contained" className={classes.cancel} onClick={handleClose}>
           キャンセル
         </Button>
-        <Button variant="contained" color="primary" className={classes.finish} onClick={handleChange}>
-          追加
-        </Button>
+        {category ? (
+          <Button variant="contained" color="primary" className={classes.finish} onClick={handleChange}>
+            変更
+          </Button>
+        ) : (
+          <Button variant="contained" color="primary" className={classes.finish} onClick={handleChange}>
+            追加
+          </Button>
+        )}
       </div>
     </TransitionsModal>
   );

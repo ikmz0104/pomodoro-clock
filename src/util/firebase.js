@@ -57,7 +57,7 @@ class Firebase {
     }
   };
 
-  setCategory = async (id, data) => {
+  updateCategory = async (id, data) => {
     try {
       await this.categories.doc(id).update(data);
     } catch (e) {
