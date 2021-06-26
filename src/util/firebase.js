@@ -65,6 +65,14 @@ class Firebase {
     }
   };
 
+  deleteCategory = async (id) => {
+    try {
+      await this.categories.doc(id).delete();
+    } catch (e) {
+      throw e;
+    }
+  };
+
   createCategory = async (data) => {
     try {
       await this.categories.doc().set(data);

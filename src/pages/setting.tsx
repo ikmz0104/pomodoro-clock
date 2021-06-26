@@ -14,24 +14,24 @@ import { CategoryModal } from 'views/CategoryModal';
 
 type PropsOptional = {
   onValueChange: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-  name: string;
-  time: number;
+  handleListItemDelete: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  category: CategoryProps;
 };
 
-const CategoryList: React.FC<PropsOptional> = ({ onValueChange, name, time }) => {
+const CategoryList = React.memo<PropsOptional>(({ onValueChange, category, handleListItemDelete }) => {
   return (
     <ListItem button onClick={onValueChange}>
-      <ListItemText primary={name} secondary={time ? `${time}分` : null} />
+      <ListItemText primary={category.name} secondary={category.time ? `${category.time}分` : null} />
       <ListItemSecondaryAction>
-        <IconButton edge="end" aria-label="delete">
+        <IconButton edge="end" aria-label="delete" onClick={handleListItemDelete}>
           <DeleteIcon />
         </IconButton>
       </ListItemSecondaryAction>
     </ListItem>
   );
-};
+});
 
-const SettingPage: React.FC = (props) => {
+const SettingPage: React.FC = () => {
   const router = useRouter();
 
   //state
@@ -95,6 +95,16 @@ const SettingPage: React.FC = (props) => {
     setOpen(false);
   };
 
+  //カテゴリー削除
+  const handleListItemDelete = async (id: string) => {
+    try {
+      await firebase.deleteCategory(id);
+      await getCategories(userId);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <>
       <Header title="設定" />
@@ -105,9 +115,9 @@ const SettingPage: React.FC = (props) => {
             {categories.map((category) => (
               <CategoryList
                 key={category.id}
-                name={category.name}
-                time={category.time}
+                category={category}
                 onValueChange={() => handleListItemClick(category)}
+                handleListItemDelete={() => handleListItemDelete(category.id)}
               />
             ))}
           </List>
