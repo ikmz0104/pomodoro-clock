@@ -12,6 +12,7 @@ const WorkPage: React.FC = (props) => {
   const defaultBreakLength = '5';
 
   const audioBeep: any = React.createRef();
+  const chimeAudioBeep: any = React.createRef();
 
   //state
   const [name, setName] = useState('みーたん！');
@@ -19,18 +20,21 @@ const WorkPage: React.FC = (props) => {
   const [isStart, setIsStart] = useState(false);
   const [pause, setPause] = useState(false);
   const [timeLabel, setTimeLabel] = useState(name);
-  const [session, setSession] = useState(true);
+  const [session, setSession] = useState(true); //sessionがTrueなら作業中 Falseなら休憩中
   const [timeLeftInSecond, setTimeLeftInSecond] = useState(Number.parseInt(defaultSessionLength, 10) * 60);
   const [breakLength, setBreakLength] = useState(Number.parseInt(defaultBreakLength, 10));
   const [sessionLength, setSessionLength] = useState(Number.parseInt(defaultSessionLength, 10));
   const [timerInterval, setTimerInterval] = useState(null);
+
+  const [chime, setChime] = useState('');
+  const [breakSound, setBreakSound] = useState('');
   //modal
   const [open, setOpen] = useState(false);
 
   //最初のレンダリング時
   useEffect(() => {
     async function fetchData(id) {
-      await Promise.all([getCategory(id)]);
+      await Promise.all([getCategory(id), getSounds()]);
     }
     if (!router.isReady) {
       return;
@@ -53,6 +57,19 @@ const WorkPage: React.FC = (props) => {
     setSessionLength(Number.parseInt(category.time, 10));
   };
 
+  const getSounds = async () => {
+    const sounds = await firebase.getSounds();
+    setChime(sounds.chime);
+    setBreakSound(sounds.breakData[Math.floor(Math.random() * sounds.breakData.length)]);
+  };
+
+  const setSound = async () => {
+    audioBeep.current.pause();
+    audioBeep.current.currentTime = 0;
+    chimeAudioBeep.current.pause();
+    chimeAudioBeep.current.currentTime = 0;
+  };
+
   const onReset = () => {
     setBreakLength(Number.parseInt(defaultBreakLength, 10));
     setSessionLength(Number.parseInt(defaultSessionLength, 10));
@@ -64,8 +81,7 @@ const WorkPage: React.FC = (props) => {
     setOpen(false);
     setPause(false);
 
-    audioBeep.current.pause();
-    audioBeep.current.currentTime = 0;
+    setSound();
     timerInterval && clearInterval(timerInterval);
   };
 
@@ -79,8 +95,7 @@ const WorkPage: React.FC = (props) => {
         }, 1000),
       );
     } else {
-      audioBeep.current.pause();
-      audioBeep.current.currentTime = 0;
+      setSound();
       timerInterval && clearInterval(timerInterval);
 
       setPause(true);
@@ -91,9 +106,15 @@ const WorkPage: React.FC = (props) => {
 
   const decreaseTimer = () => setTimeLeftInSecond((preTimeLeftInSecond) => preTimeLeftInSecond - 1);
 
+  const playMitanVoice = () => {
+    chimeAudioBeep.current.pause();
+    chimeAudioBeep.current.currentTime = 0;
+    audioBeep.current.play();
+  };
+
   const phaseControl = () => {
     if (timeLeftInSecond === 0) {
-      audioBeep.current.play();
+      chimeAudioBeep.current.play();
       if (session) {
         setTimeLabel('休憩');
         setSession(false);
@@ -115,39 +136,33 @@ const WorkPage: React.FC = (props) => {
     setOpen(false);
   };
 
-  if (!session) {
-    //休憩中の表示
-    return (
-      <div className="bg_test">
-        <Header title={timeLabel} />
-        <div className={styles.container}>
-          <Times session={session} timeLeftInSecond={timeLeftInSecond} timeLabel={timeLabel} />
-          <Controller onReset={onReset} onStartStop={onStartStop} isStart={isStart} pause={pause} handleModalOpen={handleModalOpen} />
-          <audio id="beep" preload="auto" src="https://goo.gl/65cBl1" ref={audioBeep}></audio>
-          <div className={styles.label_break}>
-            <p>{timeLabel}</p>
-            <p>{defaultSessionLength}min</p>
-          </div>
-        </div>
-        {/* <Bubble /> */}
-        <VerificationModal open={open} handleModalClose={handleModalClose} onReset={onReset} name={timeLabel} />
-      </div>
-    );
-  }
-
   return (
     <>
-      <Header title={timeLabel} />
-      <div className={styles.container}>
-        <div className={styles.label}>
-          <p>{timeLabel}</p>
-          <p>{defaultSessionLength}min</p>
-        </div>
-        <Times session={session} timeLeftInSecond={timeLeftInSecond} timeLabel={timeLabel} />
-        <Controller onReset={onReset} onStartStop={onStartStop} isStart={isStart} pause={pause} handleModalOpen={handleModalOpen} />
-        <audio id="beep" preload="auto" src="https://goo.gl/65cBl1" ref={audioBeep}></audio>
+      <div className={!session ? 'bg_test' : ''}>
+        <Header title={timeLabel} />
+        {!session ? (
+          <div className={styles.container}>
+            <Times session={session} timeLeftInSecond={timeLeftInSecond} timeLabel={timeLabel} />
+            <Controller onReset={onReset} onStartStop={onStartStop} isStart={isStart} pause={pause} handleModalOpen={handleModalOpen} />
+            <div className={styles.label_break}>
+              <p>{timeLabel}</p>
+              <p>{defaultSessionLength}min</p>
+            </div>
+          </div>
+        ) : (
+          <div className={styles.container}>
+            <div className={styles.label}>
+              <p>{timeLabel}</p>
+              <p>{defaultSessionLength}min</p>
+            </div>
+            <Times session={session} timeLeftInSecond={timeLeftInSecond} timeLabel={timeLabel} />
+            <Controller onReset={onReset} onStartStop={onStartStop} isStart={isStart} pause={pause} handleModalOpen={handleModalOpen} />
+          </div>
+        )}
       </div>
       <VerificationModal open={open} handleModalClose={handleModalClose} onReset={onReset} name={timeLabel} />
+      <audio id="beep" preload="auto" src={chime} ref={chimeAudioBeep} onEnded={playMitanVoice}></audio>
+      <audio id="beep" preload="auto" src={breakSound} ref={audioBeep}></audio>
     </>
   );
 };

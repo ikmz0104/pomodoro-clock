@@ -4,6 +4,7 @@ class Firebase {
   constructor() {
     this.users = db.collection('users');
     this.categories = db.collection('categories');
+    this.sounds = db.collection('sounds');
   }
 
   getUserId = async () => {
@@ -76,6 +77,32 @@ class Firebase {
   createCategory = async (data) => {
     try {
       await this.categories.doc().set(data);
+    } catch (e) {
+      throw e;
+    }
+  };
+
+  getSounds = async () => {
+    let data = {};
+    let breakData = [];
+    const ref = this.sounds;
+    const breakRef = ref.where('type', '==', 'break');
+    try {
+      await breakRef.get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          breakData.push(doc.data().url);
+        });
+      });
+      data.breakData = breakData;
+      await ref
+        .doc('chime')
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            data.chime = doc.data().url;
+          }
+        });
+      return data;
     } catch (e) {
       throw e;
     }
