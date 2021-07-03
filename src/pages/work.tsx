@@ -26,8 +26,8 @@ const WorkPage: React.FC = (props) => {
   const [sessionLength, setSessionLength] = useState(Number.parseInt(defaultSessionLength, 10));
   const [timerInterval, setTimerInterval] = useState(null);
 
-  const [chime, setChime] = useState('');
-  const [breakSound, setBreakSound] = useState('');
+  const [chime, setChime] = useState(''); //チャイム
+  const [breakSound, setBreakSound] = useState(''); //みーたんボイスの
   //modal
   const [open, setOpen] = useState(false);
 
@@ -63,6 +63,7 @@ const WorkPage: React.FC = (props) => {
     setBreakSound(sounds.breakData[Math.floor(Math.random() * sounds.breakData.length)]);
   };
 
+  //サウンドの初期化(ストップして再生位置を最初の位置に戻す)
   const setSound = async () => {
     audioBeep.current.pause();
     audioBeep.current.currentTime = 0;
@@ -70,6 +71,7 @@ const WorkPage: React.FC = (props) => {
     chimeAudioBeep.current.currentTime = 0;
   };
 
+  //タイマーのリセット(終了するボタンを押した時)
   const onReset = () => {
     setBreakLength(Number.parseInt(defaultBreakLength, 10));
     setSessionLength(Number.parseInt(defaultSessionLength, 10));
@@ -104,14 +106,17 @@ const WorkPage: React.FC = (props) => {
     }
   };
 
+  //残り時間を-1秒更新する
   const decreaseTimer = () => setTimeLeftInSecond((preTimeLeftInSecond) => preTimeLeftInSecond - 1);
 
+  //みーたんボイスを再生する!
   const playMitanVoice = () => {
     chimeAudioBeep.current.pause();
     chimeAudioBeep.current.currentTime = 0;
     audioBeep.current.play();
   };
 
+  //作業と休憩の切替
   const phaseControl = () => {
     if (timeLeftInSecond === 0) {
       chimeAudioBeep.current.play();
