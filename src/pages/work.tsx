@@ -60,7 +60,7 @@ const WorkPage: React.FC = (props) => {
   const getSounds = async () => {
     const sounds = await firebase.getSounds();
     setChime(sounds.chime);
-    setBreakSound(sounds.breakData[Math.floor(Math.random() * sounds.breakData.length)]);
+    setBreakSound(sounds.breakData[Math.floor(Math.random() * sounds.breakData.length)]); //ランダムに一つサウンド選ぶ
   };
 
   //サウンドの初期化(ストップして再生位置を最初の位置に戻す)
