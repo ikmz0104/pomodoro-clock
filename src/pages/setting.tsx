@@ -11,6 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { CategoryModal } from 'views/CategoryModal';
+import { CategoryDeleteModal } from 'views/CategoryDeleteModal';
 
 type PropsOptional = {
   onValueChange: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -24,12 +25,16 @@ const CategoryList = React.memo<PropsOptional>(({ onValueChange, category, handl
       <ListItemText primary={category.name} secondary={category.time ? `${category.time}分` : null} />
       <ListItemSecondaryAction>
         <IconButton edge="end" aria-label="delete" onClick={handleListItemDelete}>
-          <DeleteIcon />
+        <DeleteIcon />
         </IconButton>
       </ListItemSecondaryAction>
     </ListItem>
   );
 });
+
+
+
+
 
 const SettingPage: React.FC = () => {
   const router = useRouter();
@@ -66,6 +71,10 @@ const SettingPage: React.FC = () => {
 
   const handleAddCategoryClick = () => {
     setSelectedOption(null);
+    setOpen(true);
+  };
+
+  const handleDeleteCategoryClick = () => {
     setOpen(true);
   };
 
@@ -109,7 +118,7 @@ const SettingPage: React.FC = () => {
     <>
       <Header title="設定" />
       <div className="content">
-        <div style={{ marginBottom: 40 }}>
+        <div className="mb">
           <p className="title">カテゴリー</p>
           <List dense={true}>
             {categories.map((category) => (
@@ -121,13 +130,19 @@ const SettingPage: React.FC = () => {
               />
             ))}
           </List>
-          <Button variant="outlined" onClick={handleAddCategoryClick}>
-            カテゴリーの追加
-          </Button>
         </div>
-        <Button variant="contained" color="primary" onClick={handleBack}>
-          戻る
-        </Button>
+        <div className="center mb">
+          <div className="inline mr">
+            <Button variant="contained" onClick={handleBack}>
+              戻る
+            </Button>
+          </div>
+          <div className="inline">
+              <Button variant="contained" color="primary" href="#contained-buttons" onClick={handleAddCategoryClick}>
+                カテゴリーの追加
+              </Button>
+          </div>
+        </div>
       </div>
       <CategoryModal open={open} handleModalClose={handleModalClose} handleModalChange={handleModalChange} category={selectedOption} />
     </>
