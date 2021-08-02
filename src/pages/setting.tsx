@@ -145,7 +145,6 @@ const SettingPage: React.FC = () => {
         </div>
       </div>
       <CategoryModal open={open} handleModalClose={handleModalClose} handleModalChange={handleModalChange} category={selectedOption} />
-      <CategoryDeleteModal open={open} handleModalClose={handleModalClose} handleModalChange={handleModalChange} category={selectedOption} />
     </>
   );
 };
