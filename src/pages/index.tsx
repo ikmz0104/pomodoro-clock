@@ -59,6 +59,7 @@ const Home: React.FC = (props) => {
   return (
     <>
       <div>
+        <pre>{currentUser && JSON.stringify(currentUser, null, 4)}</pre>
         <button onClick={logOut}>Logout</button>
       </div>
       <Header title="みーたんタイマー" />
