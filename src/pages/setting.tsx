@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import firebase from 'util/firebase';
+import nookies from 'nookies';
+import { GetServerSidePropsContext } from 'next';
 import Header from 'components/Header';
 import { Button } from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
@@ -33,7 +35,39 @@ const CategoryList = React.memo<PropsOptional>(({ onValueChange, category, handl
   );
 });
 
-const SettingPage: React.FC = () => {
+//ssr
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  try {
+    //cookieのuid取得
+    const cookies = nookies.get(ctx);
+    const { uid } = cookies;
+    if (uid == 'undefined') {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
+
+    return {
+      props: { currentUser: uid },
+    };
+  } catch (err) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+};
+
+type SettingProps = {
+  currentUser: string;
+};
+
+const SettingPage: React.FC<SettingProps> = ({ currentUser }) => {
   const router = useRouter();
 
   //state
