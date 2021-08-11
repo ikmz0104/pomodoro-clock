@@ -16,12 +16,6 @@ const Home: React.FC = (props) => {
   const router = useRouter()
   const [currentUser, setCurrentUser] = useState<null | object>(null)
 
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      user ? setCurrentUser(user) : router.push('/login')
-    })
-  }, [])
-
   const logOut = async () => {
     try {
       await auth.signOut()
