@@ -1,11 +1,11 @@
-import { FC, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Router, { useRouter } from 'next/router'
 import Link from 'next/link'
 
 import { auth } from '../../lib/db'
 import { AuthContext } from '../auth/AuthProvider'
 
-const SignUp: FC = () => {
+const SignUp: React.FC = () => {
   const router = useRouter()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
