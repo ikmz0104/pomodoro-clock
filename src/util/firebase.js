@@ -7,10 +7,6 @@ class Firebase {
     this.sounds = db.collection('sounds');
   }
 
-  getUserId = async () => {
-    return '12345678'; //ログイン認証するまでの仮
-  };
-
   getUserData = async (userId) => {
     let userData = {};
     const ref = this.users.doc(userId);

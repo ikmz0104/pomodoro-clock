@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { CategoryModal } from 'views/CategoryModal';
 import { CategoryDeleteModal } from 'views/CategoryDeleteModal';
+import { useAuth } from 'hooks/useAuth';
 
 type PropsOptional = {
   onValueChange: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -25,16 +26,12 @@ const CategoryList = React.memo<PropsOptional>(({ onValueChange, category, handl
       <ListItemText primary={category.name} secondary={category.time ? `${category.time}分` : null} />
       <ListItemSecondaryAction>
         <IconButton edge="end" aria-label="delete" onClick={handleListItemDelete}>
-        <DeleteIcon />
+          <DeleteIcon />
         </IconButton>
       </ListItemSecondaryAction>
     </ListItem>
   );
 });
-
-
-
-
 
 const SettingPage: React.FC = () => {
   const router = useRouter();
@@ -45,10 +42,11 @@ const SettingPage: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState({ name: '', time: 0, id: '', userId: '' });
   //modal state
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     async function fetchData() {
-      const userId = await firebase.getUserId(); //テストId
+      const userId = user.uid;
       setUserId(userId);
       await getCategories(userId);
     }
@@ -138,9 +136,9 @@ const SettingPage: React.FC = () => {
             </Button>
           </div>
           <div className="inline">
-              <Button variant="contained" color="primary" href="#contained-buttons" onClick={handleAddCategoryClick}>
-                カテゴリーの追加
-              </Button>
+            <Button variant="contained" color="primary" href="#contained-buttons" onClick={handleAddCategoryClick}>
+              カテゴリーの追加
+            </Button>
           </div>
         </div>
       </div>
