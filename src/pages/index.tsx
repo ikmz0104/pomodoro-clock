@@ -56,7 +56,7 @@ const Home = ({ currentUser }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const userId = '12345678'; //テストId
+      const userId = currentUser; //テストId
       await Promise.all([getUser(userId), getCategories(userId)]);
     }
     fetchData();
