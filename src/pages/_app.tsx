@@ -3,6 +3,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import SimpleBottomNavigation from 'views/Navigation';
 import { muiTheme } from 'util/theme';
 import 'styles/globals.css';
+import { AuthProvider } from '../auth/AuthProvider';
 
 interface Props {
   pageProps: any;
@@ -15,7 +16,9 @@ export default class App extends React.Component<Props> {
 
     return (
       <ThemeProvider theme={muiTheme}>
-        <Component {...pageProps} />
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
         <SimpleBottomNavigation />
       </ThemeProvider>
     );

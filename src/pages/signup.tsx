@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Router, { useRouter } from 'next/router'
 import Link from 'next/link'
-
+import firebase from "firebase";
 import { auth } from '../../lib/db'
 import { AuthContext } from '../auth/AuthProvider'
 
@@ -12,7 +12,7 @@ const SignUp: React.FC = () => {
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      user && router.push('/')
+      user && Router.push('/')
     })
   }, [])
 
@@ -20,7 +20,7 @@ const SignUp: React.FC = () => {
     e.preventDefault()
     try {
       await auth.createUserWithEmailAndPassword(email, password)
-      router.push('/login')
+      Router.push('/login')
     } catch (err) {
       alert(err.message)
     }

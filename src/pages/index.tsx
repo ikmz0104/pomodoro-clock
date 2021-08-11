@@ -6,7 +6,7 @@ import CategoryList from 'components/CategoryList'
 import Header from 'components/Header'
 import Calendar from 'components/Calendar'
 import { auth } from '../../lib/db'
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
 
 //ApexCharts読み込むのにNext.jsで必要な設定
 const DynamicGraphComponentWithNoSSR = dynamic(() => import('../views/Graph/Graph'), { ssr: false });
@@ -18,7 +18,7 @@ const Home: React.FC = (props) => {
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      user ? setCurrentUser(user) : router.push('/login')
+      user ? setCurrentUser(user) : Router.push('/login')
     })
   }, [])
 

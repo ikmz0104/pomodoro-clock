@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { auth } from '../../lib/db'
+import firebase from "firebase";
+import Router, { useRouter } from 'next/router'
+import { AuthContext } from '../auth/AuthProvider'
 
 const Login: React.FC = () => {
   const router = useRouter()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
+  const auth = firebase.auth()
+
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      user && router.push('/')
-    })
+      auth.onAuthStateChanged((user) => {
+          user && Router.push('/')
+      })
   }, [])
 
   const logIn = async (e) => {
     e.preventDefault()
     try {
       await auth.signInWithEmailAndPassword(email, password)
-      router.push('/')
+      Router.push('/')
     } catch (err) {
       alert(err.message)
     }
