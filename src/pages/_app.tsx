@@ -1,33 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import SimpleBottomNavigation from 'views/Navigation';
 import { muiTheme } from 'util/theme';
-import { auth } from '../../lib/db';
-import { useRouter } from 'next/router';
 import 'styles/globals.css';
-import AuthContext from 'auth/AuthProvider';
+import type { AppProps } from 'next/app';
+import { AuthProvider } from 'auth/AuthProvider';
 
-interface Props {
-  pageProps: any;
-  Component: any;
-}
-
-const App: React.FC<Props> = ({ pageProps, Component }) => {
-  const [currentUser, setCurrentUser] = useState<null | object>(null);
-  const router = useRouter();
-
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      user ? setCurrentUser(user) : router.push('/login');
-    });
-  }, []);
-
+const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <ThemeProvider theme={muiTheme}>
-      <AuthContext.Provider value={currentUser}>
+      <AuthProvider>
         <Component {...pageProps} />
         <SimpleBottomNavigation />
-      </AuthContext.Provider>
+      </AuthProvider>
     </ThemeProvider>
   );
 };
