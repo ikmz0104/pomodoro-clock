@@ -14,12 +14,12 @@ export function AuthProvider({ children }: any) {
     return auth.onAuthStateChanged(async (user) => {
       if (!user) {
         setUser(null);
-        nookies.set(undefined, 'uid', '', { path: '/' });
+        nookies.set(null, 'uid', '', { path: '/' });
       } else {
         const uid = user.uid;
         setUser(user);
         //cookieにuserid保存
-        nookies.set(undefined, 'uid', uid, { path: '/' });
+        nookies.set(null, 'uid', uid, { path: '/' });
       }
     });
   }, []);
