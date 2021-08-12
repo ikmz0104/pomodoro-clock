@@ -6,6 +6,7 @@ import Controller from 'components/Controller';
 import firebase from 'util/firebase';
 import styles from 'styles/Work.module.css';
 import { VerificationModal } from 'views/VerificationModal';
+import SimpleBottomNavigation from 'views/Navigation';
 
 const WorkPage: React.FC = (props) => {
   const router: any = useRouter();
@@ -168,6 +169,7 @@ const WorkPage: React.FC = (props) => {
       <VerificationModal open={open} handleModalClose={handleModalClose} onReset={onReset} name={timeLabel} />
       <audio id="beep" preload="auto" src={chime} ref={chimeAudioBeep} onEnded={playMitanVoice}></audio>
       <audio id="beep" preload="auto" src={breakSound} ref={audioBeep}></audio>
+      <SimpleBottomNavigation />
     </>
   );
 };
