@@ -9,6 +9,9 @@ import Calendar from 'components/Calendar';
 import { auth } from '../../lib/db';
 import { useRouter } from 'next/router';
 
+import DesktopAccessDisabledIcon from '@material-ui/icons/DesktopAccessDisabled';
+import styles from '../styles/auth.module.css';
+
 //ApexCharts読み込むのにNext.jsで必要な設定
 const DynamicGraphComponentWithNoSSR = dynamic(() => import('../views/Graph/Graph'), { ssr: false });
 
@@ -83,7 +86,12 @@ const Home = ({ currentUser }) => {
     <>
       <Header title="みーたんタイマー" />
       <div className="content">
-        <div>{currentUser ? <button onClick={logOut}>Logout</button> : ''}</div>
+        <div>{currentUser
+         ? <DesktopAccessDisabledIcon
+          onClick={logOut}
+          className={styles.logout_icon}/>
+         : ''}</div>
+        <hr></hr>
         <div style={{ marginBottom: 40 }}>
           <p className="title">カテゴリー</p>
           <CategoryList categories={categories} />
