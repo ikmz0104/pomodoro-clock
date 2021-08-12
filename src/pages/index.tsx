@@ -12,6 +12,8 @@ import { useRouter } from 'next/router';
 import DesktopAccessDisabledIcon from '@material-ui/icons/DesktopAccessDisabled';
 import styles from '../styles/auth.module.css';
 
+import SimpleBottomNavigation from 'views/Navigation';
+
 //ApexCharts読み込むのにNext.jsで必要な設定
 const DynamicGraphComponentWithNoSSR = dynamic(() => import('../views/Graph/Graph'), { ssr: false });
 
@@ -107,6 +109,7 @@ const Home = ({ currentUser }) => {
           <Calendar />
         </div>
       </div>
+      <SimpleBottomNavigation />
     </>
   );
 };

@@ -1,40 +1,20 @@
 import { useEffect, useState } from 'react'
 import Router, { useRouter } from 'next/router'
 import Link from 'next/link'
-import firebase from "firebase";
 import { auth } from '../../lib/db'
-import { AuthContext } from '../auth/AuthProvider'
-
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import SendIcon from '@material-ui/icons/Send';
-import EmailIcon from '@material-ui/icons/Email';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { IconButton } from '@material-ui/core';
-import { SettingsPowerRounded } from '@material-ui/icons';
-
-import { Avatar, Modal } from '@material-ui/core';
-
-import styles from 'login.module.css';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import styles from '../styles/auth.module.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
-  },
-  image: {
-    backgroundImage: 'url(https://source.unsplash.com/random)',
-    backgroundRepeat: 'no-repeat',
-    backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    width : '200vh',
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -82,7 +62,7 @@ const SignUp: React.FC = () => {
   return (
 <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      <Grid item xs={false} sm={4} md={7} className={styles.signup_image} />
       <Grid item xs={12} sm={8} md={5}>
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
@@ -127,7 +107,7 @@ const SignUp: React.FC = () => {
               fullWidth
               variant="contained"
             >
-              Signup
+              <PersonAddIcon />&nbsp;Signup
             </Button>
           </form>
           <Link href="/login">

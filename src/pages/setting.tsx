@@ -15,6 +15,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { CategoryModal } from 'views/CategoryModal';
 import { CategoryDeleteModal } from 'views/CategoryDeleteModal';
 import { useAuth } from 'hooks/useAuth';
+import SimpleBottomNavigation from 'views/Navigation';
 
 type PropsOptional = {
   onValueChange: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -177,6 +178,7 @@ const SettingPage: React.FC<SettingProps> = ({ currentUser }) => {
         </div>
       </div>
       <CategoryModal open={open} handleModalClose={handleModalClose} handleModalChange={handleModalChange} category={selectedOption} />
+      <SimpleBottomNavigation />
     </>
   );
 };
