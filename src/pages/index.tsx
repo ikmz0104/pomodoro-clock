@@ -24,7 +24,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     //ssrだとhooksが使えずuseContextで取得できなかったから
     const cookies = nookies.get(ctx);
     const { uid } = cookies;
-    if (uid == null) {
+    if (uid == '') {
       return {
         redirect: {
           destination: '/login',
