@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import firebase from 'util/firebase';
+import nookies from 'nookies';
+import { GetServerSidePropsContext } from 'next';
 import Header from 'components/Header';
 import { Button } from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,6 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { CategoryModal } from 'views/CategoryModal';
 import { CategoryDeleteModal } from 'views/CategoryDeleteModal';
+import { useAuth } from 'hooks/useAuth';
 
 type PropsOptional = {
   onValueChange: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -25,18 +28,46 @@ const CategoryList = React.memo<PropsOptional>(({ onValueChange, category, handl
       <ListItemText primary={category.name} secondary={category.time ? `${category.time}分` : null} />
       <ListItemSecondaryAction>
         <IconButton edge="end" aria-label="delete" onClick={handleListItemDelete}>
-        <DeleteIcon />
+          <DeleteIcon />
         </IconButton>
       </ListItemSecondaryAction>
     </ListItem>
   );
 });
 
+//ssr
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  try {
+    //cookieのuid取得
+    const cookies = nookies.get(ctx);
+    const { uid } = cookies;
+    if (uid == 'undefined') {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
 
+    return {
+      props: { currentUser: uid },
+    };
+  } catch (err) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+};
 
+type SettingProps = {
+  currentUser: string;
+};
 
-
-const SettingPage: React.FC = () => {
+const SettingPage: React.FC<SettingProps> = ({ currentUser }) => {
   const router = useRouter();
 
   //state
@@ -45,10 +76,11 @@ const SettingPage: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState({ name: '', time: 0, id: '', userId: '' });
   //modal state
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     async function fetchData() {
-      const userId = await firebase.getUserId(); //テストId
+      const userId = user.uid;
       setUserId(userId);
       await getCategories(userId);
     }
@@ -138,9 +170,9 @@ const SettingPage: React.FC = () => {
             </Button>
           </div>
           <div className="inline">
-              <Button variant="contained" color="primary" href="#contained-buttons" onClick={handleAddCategoryClick}>
-                カテゴリーの追加
-              </Button>
+            <Button variant="contained" color="primary" href="#contained-buttons" onClick={handleAddCategoryClick}>
+              カテゴリーの追加
+            </Button>
           </div>
         </div>
       </div>

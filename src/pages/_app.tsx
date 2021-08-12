@@ -3,21 +3,18 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import SimpleBottomNavigation from 'views/Navigation';
 import { muiTheme } from 'util/theme';
 import 'styles/globals.css';
+import type { AppProps } from 'next/app';
+import { AuthProvider } from 'auth/AuthProvider';
 
-interface Props {
-  pageProps: any;
-  Component: any;
-}
-
-export default class App extends React.Component<Props> {
-  render(): JSX.Element {
-    const { pageProps, Component } = this.props;
-
-    return (
-      <ThemeProvider theme={muiTheme}>
+const App: React.FC<AppProps> = ({ Component, pageProps }) => {
+  return (
+    <ThemeProvider theme={muiTheme}>
+      <AuthProvider>
         <Component {...pageProps} />
         <SimpleBottomNavigation />
-      </ThemeProvider>
-    );
-  }
-}
+      </AuthProvider>
+    </ThemeProvider>
+  );
+};
+
+export default App;
