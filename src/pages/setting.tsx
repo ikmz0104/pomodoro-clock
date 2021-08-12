@@ -42,7 +42,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     //cookieのuid取得
     const cookies = nookies.get(ctx);
     const { uid } = cookies;
-    if (uid == 'undefined') {
+    if (uid == '' || null) {
       return {
         redirect: {
           destination: '/login',
