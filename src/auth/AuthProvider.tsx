@@ -14,7 +14,7 @@ export function AuthProvider({ children }: any) {
     return auth.onAuthStateChanged(async (user) => {
       if (!user) {
         setUser(null);
-        nookies.set(undefined, 'uid', undefined, { path: '/' });
+        nookies.set(undefined, 'uid', '', { path: '/' });
       } else {
         const uid = user.uid;
         setUser(user);
