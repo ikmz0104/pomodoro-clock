@@ -24,7 +24,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     //ssrだとhooksが使えずuseContextで取得できなかったから
     const cookies = nookies.get(ctx);
     const { uid } = cookies;
-    if (uid == '') {
+    if (uid == null || '') {
       return {
         redirect: {
           destination: '/login',
@@ -88,11 +88,10 @@ const Home = ({ currentUser }) => {
     <>
       <Header title="みーたんタイマー" />
       <div className="content">
-        <div>{currentUser
-         ? <DesktopAccessDisabledIcon
+        <DesktopAccessDisabledIcon
           onClick={logOut}
-          className={styles.logout_icon}/>
-         : ''}</div>
+          className={styles.logout_icon}
+        />
         <hr></hr>
         <div style={{ marginBottom: 40 }}>
           <p className="title">カテゴリー</p>
