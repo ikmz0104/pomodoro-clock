@@ -66,9 +66,9 @@ const SignUp = () => {
       Router.push('/login');
     } catch (err) {
       console.log(err);
-      if (err.code === 'auth/invalid-email' || 'auth/email-already-in-use') {
+      if (err.code === 'auth/invalid-email' || err.code === 'auth/email-already-in-use') {
         setErrorEmail(true);
-      } else if (err.code === 'auth/operation-not-allowed' || 'auth/weak-password') {
+      } else if (err.code === 'auth/operation-not-allowed' || err.code === 'auth/weak-password') {
         setErrorPassword(true);
       }
       setErrorMessage(err.message);
