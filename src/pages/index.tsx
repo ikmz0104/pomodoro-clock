@@ -5,7 +5,7 @@ import { GetServerSidePropsContext } from 'next';
 import firebase from 'util/firebase';
 import CategoryList from 'components/CategoryList';
 import Header from 'components/Header';
-import Calendar from 'components/Calendar';
+import Calendar from 'views/HeatCalendar';
 import { auth } from '../../lib/db';
 import { useRouter } from 'next/router';
 
@@ -15,7 +15,7 @@ import styles from '../styles/auth.module.css';
 import SimpleBottomNavigation from 'views/Navigation';
 
 //ApexCharts読み込むのにNext.jsで必要な設定
-const DynamicGraphComponentWithNoSSR = dynamic(() => import('../views/Graph/Graph'), { ssr: false });
+const DynamicGraphComponentWithNoSSR = dynamic(() => import('../views/ApexCharts'), { ssr: false });
 
 //ssr
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
