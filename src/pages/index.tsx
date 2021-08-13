@@ -8,14 +8,13 @@ import Header from 'components/Header';
 import Calendar from 'views/HeatCalendar';
 import { auth } from '../../lib/db';
 import { useRouter } from 'next/router';
-
 import DesktopAccessDisabledIcon from '@material-ui/icons/DesktopAccessDisabled';
 import styles from '../styles/auth.module.css';
-
 import SimpleBottomNavigation from 'views/Navigation';
+import EbbinghausForgettingGraph from 'views/Ebbinghaus/index';
 
 //ApexCharts読み込むのにNext.jsで必要な設定
-const DynamicGraphComponentWithNoSSR = dynamic(() => import('../views/ApexCharts'), { ssr: false });
+const DynamicGraphComponentWithNoSSR = dynamic(() => import('../views/ApexCharts/index'), { ssr: false });
 
 //ssr
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -99,6 +98,10 @@ const Home = ({ currentUser }) => {
           <React.StrictMode>
             <DynamicGraphComponentWithNoSSR />
           </React.StrictMode>
+        </div>
+        <div style={{ marginBottom: 40 }}>
+          <p className="title">忘却曲線</p>
+          <EbbinghausForgettingGraph />
         </div>
         <div style={{ marginBottom: 40 }}>
           <p className="title">カレンダー</p>
