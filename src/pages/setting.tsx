@@ -148,7 +148,7 @@ const SettingPage: React.FC<SettingProps> = ({ currentUser }) => {
   };
 
   return (
-    <>
+    <div className="container">
       <Header title="設定" />
       <div className="content">
         <div className="mb">
@@ -179,7 +179,7 @@ const SettingPage: React.FC<SettingProps> = ({ currentUser }) => {
       </div>
       <CategoryModal open={open} handleModalClose={handleModalClose} handleModalChange={handleModalChange} category={selectedOption} />
       <SimpleBottomNavigation />
-    </>
+    </div>
   );
 };
 

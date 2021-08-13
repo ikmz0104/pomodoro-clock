@@ -85,13 +85,10 @@ const Home = ({ currentUser }) => {
   };
 
   return (
-    <>
+    <div className="container">
       <Header title="みーたんタイマー" />
       <div className="content">
-        <DesktopAccessDisabledIcon
-          onClick={logOut}
-          className={styles.logout_icon}
-        />
+        <div>{currentUser ? <DesktopAccessDisabledIcon onClick={logOut} className={styles.logout_icon} /> : ''}</div>
         <hr></hr>
         <div style={{ marginBottom: 40 }}>
           <p className="title">カテゴリー</p>
@@ -109,7 +106,7 @@ const Home = ({ currentUser }) => {
         </div>
       </div>
       <SimpleBottomNavigation />
-    </>
+    </div>
   );
 };
 

@@ -143,7 +143,7 @@ const WorkPage: React.FC = (props) => {
   };
 
   return (
-    <>
+    <div className="container">
       <div className={!session ? 'bg_test' : ''}>
         <Header title={timeLabel} />
         {!session ? (
@@ -170,7 +170,7 @@ const WorkPage: React.FC = (props) => {
       <audio id="beep" preload="auto" src={chime} ref={chimeAudioBeep} onEnded={playMitanVoice}></audio>
       <audio id="beep" preload="auto" src={breakSound} ref={audioBeep}></audio>
       <SimpleBottomNavigation />
-    </>
+    </div>
   );
 };
 
