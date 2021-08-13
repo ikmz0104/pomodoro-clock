@@ -11,11 +11,27 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOpenSharpIcon from '@material-ui/icons/LockOpenSharp';
 import styles from '../styles/auth.module.css';
+import { Modal, Button } from '@material-ui/core';
+import SendIcon from '@material-ui/icons/Send';
+import MoodBadIcon from '@material-ui/icons/MoodBad';
 import CustomButton from 'components/Button';
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+    overflow: 'scroll',
+  };
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
+
     width: '100vw',
   },
   paper: {
@@ -34,6 +50,17 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+
+  //もだもだもーだる
+  modal: {
+    outline: 'none',
+    position: 'absolute',
+    width: 500,
+    borderRadius: 10,
+    backgroundColor: 'White',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(10),
+  },
 }));
 
 const Login: React.FC = () => {
@@ -46,6 +73,23 @@ const Login: React.FC = () => {
 
   // const auth = firebase.auth();
   const classes = useStyles();
+
+  const [openModal, setOpenModal] = useState(false); // 最初は閉じておく
+  const [resetEmail, setResetEmail] = useState('');
+
+  const sendResetEmail = async () => {
+    //メール送信ロジック
+    await auth
+      .sendPasswordResetEmail(resetEmail)
+      .then(() => {
+        setOpenModal(false); //送ったら閉じる
+        setResetEmail(''); //書いたら消す
+      })
+      .catch((err) => {
+        alert(err.message);
+        setResetEmail('');
+      });
+  };
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -132,6 +176,48 @@ const Login: React.FC = () => {
             <a className="auth-link">SIGNUP</a>
           </Link>
         </Box>
+        <hr></hr>
+        <Button
+          className={styles.password_reset}
+          onClick={() => {
+            setOpenModal(true);
+          }}
+          variant="outlined"
+          color="secondary"
+        >
+          <MoodBadIcon />
+          &nbsp;Reset password??
+        </Button>
+        <Modal
+          open={openModal}
+          onClose={() => {
+            setOpenModal(false);
+          }}
+        >
+          <div style={getModalStyle()} className={classes.modal}>
+            <div className="{styles.login_modal}">
+              <TextField
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                type="email"
+                name="email"
+                label="メールアドレスを入力して送信ボタンをクリックしてくださいね！（みーたん）"
+                value={resetEmail}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setResetEmail(e.target.value);
+                }}
+              />
+              <div className={styles.reset}>
+                <Button onClick={sendResetEmail}>
+                  <SendIcon />
+                  &nbsp;送信
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Modal>
       </Grid>
     </Grid>
   );

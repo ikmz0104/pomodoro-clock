@@ -51,3 +51,15 @@
 .logout_icon {
     cursor: pointer;
 }
+
+
+/* password reset  */
+
+.password_reset {
+    cursor: pointer;
+}
+
+.reset {
+    text-align: center;
+    padding-top: 30px;
+}
