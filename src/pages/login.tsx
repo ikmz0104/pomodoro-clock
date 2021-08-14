@@ -123,7 +123,7 @@ const Login: React.FC = () => {
       <Grid item xs={false} sm={4} md={7} className={styles.login_image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} square className={classes.paper}>
         <Typography component="h1" variant="h5">
-          Signup
+          Login
         </Typography>
         <Box component="form" className={classes.form}>
           <TextField
