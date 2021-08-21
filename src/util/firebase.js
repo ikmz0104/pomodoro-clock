@@ -103,6 +103,45 @@ class Firebase {
       throw e;
     }
   };
+
+  getSeries = async (userId) => {
+    const getRecords = async (userId, categoryId) => {
+      let data = [];
+      const ref = db.collection('users').doc(userId).collection('record').where('categoryId', '==', categoryId);
+      try {
+        const querySnapshot = await ref.get();
+        await Promise.all(
+          querySnapshot.docs.map((doc) => {
+            if (doc.exists) {
+              data.push({ x: doc.data().date, y: doc.data().time });
+            }
+          }),
+        );
+        return data;
+      } catch (e) {
+        throw e;
+      }
+    };
+
+    let series = [];
+    const ref = this.categories.where('userId', '==', userId);
+    try {
+      await ref.get().then(async function (querySnapshot) {
+        await Promise.all(
+          querySnapshot.docs.map(async (doc) => {
+            if (doc.exists) {
+              const records = await getRecords(userId, doc.id);
+              series.push({ name: doc.data().name, data: records });
+            }
+          }),
+        );
+      });
+      console.log('return');
+      return series;
+    } catch (e) {
+      throw e;
+    }
+  };
 }
 
 const Fire = new Firebase();

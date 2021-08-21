@@ -47,6 +47,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
 const Home = ({ currentUser }) => {
   const [categories, setCategories] = useState([]);
+  const [series, setSeries] = useState([]);
   const router = useRouter();
 
   const logOut = async () => {
@@ -61,12 +62,12 @@ const Home = ({ currentUser }) => {
   useEffect(() => {
     async function fetchData() {
       const userId = currentUser; //テストId
-      await Promise.all([getUser(userId), getCategories(userId)]);
+      await Promise.all([getUser(userId), getCategories(userId), getSeries(userId)]);
     }
     fetchData();
   }, []);
 
-  const getUser = async (userId: any) => {
+  const getUser = async (userId: string) => {
     try {
       const user = await firebase.getUserData(userId);
     } catch (e) {
@@ -74,10 +75,19 @@ const Home = ({ currentUser }) => {
     }
   };
 
-  const getCategories = async (userId: any) => {
+  const getCategories = async (userId: string) => {
     try {
       const categories = await firebase.getCategories(userId);
       setCategories(categories);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getSeries = async (userId: string) => {
+    try {
+      const series = await firebase.getSeries(userId);
+      setSeries(series);
     } catch (e) {
       console.error(e);
     }
@@ -95,9 +105,7 @@ const Home = ({ currentUser }) => {
         </div>
         <div style={{ marginBottom: 40 }}>
           <p className="title">作業時間</p>
-          <React.StrictMode>
-            <DynamicGraphComponentWithNoSSR />
-          </React.StrictMode>
+          <DynamicGraphComponentWithNoSSR series={series} />
         </div>
         <div style={{ marginBottom: 40 }}>
           <p className="title">忘却曲線</p>
