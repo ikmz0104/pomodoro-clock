@@ -48,6 +48,10 @@ const Graph: React.FC<GraphProps> = ({ series }) => {
     },
   };
 
+  //record内のdateに登録する値(number)
+  let date = new Date('2021/08/26').getTime();
+  console.log(date);
+
   return (
     <div id="chart">
       <ReactApexChart options={state.options} series={state.series} type="area" height={350} />
