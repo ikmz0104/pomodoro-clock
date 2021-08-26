@@ -23,7 +23,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     //ssrだとhooksが使えずuseContextで取得できなかったから
     const cookies = nookies.get(ctx);
     const { uid } = cookies;
-    if (uid == null || '') {
+    if (uid == null || uid == '') {
       return {
         redirect: {
           destination: '/login',
@@ -86,6 +86,7 @@ const Home = ({ currentUser }) => {
 
   const getSeries = async (userId: string) => {
     try {
+      console.log(userId);
       const series = await firebase.getSeries(userId);
       setSeries(series);
     } catch (e) {
