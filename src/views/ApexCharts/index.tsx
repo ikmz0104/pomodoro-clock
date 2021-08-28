@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 type GraphData = {
@@ -21,7 +21,7 @@ const Graph: React.FC<GraphProps> = ({ series }) => {
     options: {
       chart: {
         height: 350,
-        type: 'area',
+        type: "area" || "line" || "bar" || "histogram" || "pie" || "donut" || "radialBar" || "scatter" || "bubble" || "heatmap" || "treemap" || "boxPlot" || "candlestick" || "radar" || "polarArea" || "rangeBar",
       },
       dataLabels: {
         enabled: false,
