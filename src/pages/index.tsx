@@ -6,7 +6,7 @@ import firebase from 'util/firebase';
 import CategoryList from 'components/CategoryList';
 import Header from 'components/Header';
 import Calendar from 'views/HeatCalendar';
-import { auth } from '../../lib/db';
+import { auth, db } from '../../lib/db';
 import { useRouter } from 'next/router';
 import DesktopAccessDisabledIcon from '@material-ui/icons/DesktopAccessDisabled';
 import styles from '../styles/auth.module.css';
@@ -49,6 +49,20 @@ const Home = ({ currentUser }) => {
   const [categories, setCategories] = useState([]);
   const [series, setSeries] = useState([]);
   const router = useRouter();
+
+  //fetch test1
+  const [tasks, setTasks] = useState([{ date: '', time: '', name: '' }]);
+  useEffect(() => {
+    const unSub = db.collection('users').onSnapshot((snapshot) => {
+      setTasks(snapshot.docs.map((doc) => ({ date: doc.data().date, time: doc.data().time, name: doc.data().name })));
+    });
+    return () => unSub();
+  }, []);
+  console.log(tasks);
+
+  //fetch test2
+  const ref = db.collection('users').doc('0vCGbPa9h4OEmKmJI4LlwBCPO2N2').collection('record').doc('HZ0NAr1UuYClwdnKX0NA');
+  console.log(ref);
 
   const logOut = async () => {
     try {
@@ -107,6 +121,14 @@ const Home = ({ currentUser }) => {
         <div style={{ marginBottom: 40 }}>
           <p className="title">作業時間</p>
           <DynamicGraphComponentWithNoSSR series={series} />
+        </div>
+        <div>
+          <>
+          {tasks.map((task) => {
+            task.name;
+            task.time;
+          })}
+          </>
         </div>
         <div style={{ marginBottom: 40 }}>
           <p className="title">忘却曲線</p>
