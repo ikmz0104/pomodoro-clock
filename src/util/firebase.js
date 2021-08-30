@@ -107,6 +107,8 @@ class Firebase {
     getSeries = async(userId) => {
         const getRecords = async(userId, categoryId) => {
             console.log(categoryId) //categoryIdは2つともちゃんと取れてる
+
+            let data = [];
             const ref = db.collection('users').doc(userId).collection('record').where('categoryId', '==', categoryId);
             try {
                 const querySnapshot = await ref.get();
