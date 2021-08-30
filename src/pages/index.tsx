@@ -48,6 +48,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 const Home = ({ currentUser }) => {
   const [categories, setCategories] = useState([]);
   const [series, setSeries] = useState([]);
+  const [memory setMemory] = useState([]);
   const router = useRouter();
 
   const logOut = async () => {
@@ -94,6 +95,7 @@ const Home = ({ currentUser }) => {
     }
   };
 
+
   return (
     <div className="container">
       <Header title="みーたんタイマー" />
@@ -110,7 +112,7 @@ const Home = ({ currentUser }) => {
         </div>
         <div style={{ marginBottom: 40 }}>
           <p className="title">忘却曲線</p>
-          <EbbinghausForgettingGraph />
+          <EbbinghausForgettingGraph memory={memory}/>
         </div>
         <div style={{ marginBottom: 40 }}>
           <p className="title">カレンダー</p>
