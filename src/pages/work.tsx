@@ -7,34 +7,40 @@ import firebase from 'util/firebase';
 import styles from 'styles/Work.module.css';
 import { VerificationModal } from 'views/VerificationModal';
 import SimpleBottomNavigation from 'views/Navigation';
+import { usePhaseControl, useAudioRef } from 'hooks/useWork';
+import { useBool } from 'hooks/useCommon';
 
 const WorkPage: React.FC = (props) => {
   const router: any = useRouter();
   const defaultBreakLength = '5';
 
-  const audioBeep: any = React.createRef();
-  const chimeAudioBeep: any = React.createRef();
-
   //state
-  const [name, setName] = useState('みーたん！');
-  const [defaultSessionLength, setDefaultSessionLength] = useState('25');
-  const [isStart, setIsStart] = useState(false);
-  const [pause, setPause] = useState(false);
-  const [timeLabel, setTimeLabel] = useState(name);
-  const [session, setSession] = useState(true); //sessionがTrueなら作業中 Falseなら休憩中
-  const [timeLeftInSecond, setTimeLeftInSecond] = useState(Number.parseInt(defaultSessionLength, 10) * 60);
-  const [breakLength, setBreakLength] = useState(Number.parseInt(defaultBreakLength, 10));
-  const [sessionLength, setSessionLength] = useState(Number.parseInt(defaultSessionLength, 10));
+  const [name, setName] = useState<string>('みーたん！');
+  const [defaultSessionLength, setDefaultSessionLength] = useState<string>('25');
+  const [isStart, setIsStart] = useState<boolean>(false);
+  const [pause, setPause] = useState<boolean>(false);
+  const [breakLength, setBreakLength] = useState<number>(Number.parseInt(defaultBreakLength, 10));
+  const [sessionLength, setSessionLength] = useState<number>(Number.parseInt(defaultSessionLength, 10));
   const [timerInterval, setTimerInterval] = useState(null);
 
-  const [chime, setChime] = useState(''); //チャイム
-  const [breakSound, setBreakSound] = useState(''); //みーたんボイスの
-  //modal
-  const [open, setOpen] = useState(false);
+  const [chime, setChime] = useState<string>(''); //チャイム
+  const [breakSound, setBreakSound] = useState<string>(''); //みーたんボイスの
+
+  //カスタムフック作ったよ👀
+  const [open, handleModalOpen, handleModalClose] = useBool(false); //モーダル
+  const [minaAudioBeep, setMinaAudioDefault, minaAudioPlay] = useAudioRef(); //みーたボイスRef
+  const [chimeAudioBeep, setChimeAudioDefault, chimeAudioPlay] = useAudioRef(); //チャイム音Ref
+  const [timeLabel, session, setSession, timeLeftInSecond, setTimeLeftInSecond, decreaseTimer] = usePhaseControl(
+    defaultSessionLength,
+    breakLength,
+    sessionLength,
+    name,
+    chimeAudioPlay,
+  );
 
   //最初のレンダリング時
   useEffect(() => {
-    async function fetchData(id) {
+    async function fetchData(id: string) {
       await Promise.all([getCategory(id), getSounds()]);
     }
     if (!router.isReady) {
@@ -45,14 +51,9 @@ const WorkPage: React.FC = (props) => {
     }
   }, [router.isReady]);
 
-  useEffect(() => {
-    phaseControl();
-  }, [timeLeftInSecond]);
-
-  const getCategory = async (id) => {
+  const getCategory = async (id: string) => {
     const category = await firebase.getCategory(id);
     setName(category.name);
-    setTimeLabel(category.name);
     setDefaultSessionLength(category.time);
     setTimeLeftInSecond(Number.parseInt(category.time, 10) * 60);
     setSessionLength(Number.parseInt(category.time, 10));
@@ -66,24 +67,20 @@ const WorkPage: React.FC = (props) => {
 
   //サウンドの初期化(ストップして再生位置を最初の位置に戻す)
   const setSound = async () => {
-    audioBeep.current.pause();
-    audioBeep.current.currentTime = 0;
-    chimeAudioBeep.current.pause();
-    chimeAudioBeep.current.currentTime = 0;
+    setMinaAudioDefault();
+    setChimeAudioDefault();
   };
 
   //タイマーのリセット(終了するボタンを押した時)
   const onReset = () => {
     setBreakLength(Number.parseInt(defaultBreakLength, 10));
     setSessionLength(Number.parseInt(defaultSessionLength, 10));
-    setTimeLabel(name);
     setTimeLeftInSecond(Number.parseInt(defaultSessionLength, 10) * 60);
     setIsStart(false);
     setTimerInterval(null);
     setSession(true);
-    setOpen(false);
+    handleModalClose();
     setPause(false);
-
     setSound();
     timerInterval && clearInterval(timerInterval);
   };
@@ -100,46 +97,16 @@ const WorkPage: React.FC = (props) => {
     } else {
       setSound();
       timerInterval && clearInterval(timerInterval);
-
       setPause(true);
       setIsStart(!isStart);
       setTimerInterval(null);
     }
   };
 
-  //残り時間を-1秒更新する
-  const decreaseTimer = () => setTimeLeftInSecond((preTimeLeftInSecond) => preTimeLeftInSecond - 1);
-
   //みーたんボイスを再生する!
   const playMitanVoice = () => {
-    chimeAudioBeep.current.pause();
-    chimeAudioBeep.current.currentTime = 0;
-    audioBeep.current.play();
-  };
-
-  //作業と休憩の切替
-  const phaseControl = () => {
-    if (timeLeftInSecond === 0) {
-      chimeAudioBeep.current.play();
-      if (session) {
-        setTimeLabel('休憩');
-        setSession(false);
-        setTimeLeftInSecond(breakLength * 60);
-      } else {
-        setTimeLabel(name);
-        setSession(true);
-        setTimeLeftInSecond(sessionLength * 60);
-      }
-    }
-  };
-
-  //Modal
-  const handleModalOpen = () => {
-    setOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setOpen(false);
+    setChimeAudioDefault();
+    minaAudioPlay();
   };
 
   return (
@@ -148,7 +115,7 @@ const WorkPage: React.FC = (props) => {
         <Header title={timeLabel} />
         {!session ? (
           <div className={styles.container}>
-            <Times session={session} timeLeftInSecond={timeLeftInSecond} timeLabel={timeLabel} />
+            <Times session={session} timeLeftInSecond={timeLeftInSecond} timeLabel={session ? name : '休憩'} />
             <Controller onReset={onReset} onStartStop={onStartStop} isStart={isStart} pause={pause} handleModalOpen={handleModalOpen} />
             <div className={styles.label_break}>
               <p>{timeLabel}</p>
@@ -161,14 +128,14 @@ const WorkPage: React.FC = (props) => {
               <p>{timeLabel}</p>
               <p>{defaultSessionLength}min</p>
             </div>
-            <Times session={session} timeLeftInSecond={timeLeftInSecond} timeLabel={timeLabel} />
+            <Times session={session} timeLeftInSecond={timeLeftInSecond} timeLabel={session ? name : '休憩'} />
             <Controller onReset={onReset} onStartStop={onStartStop} isStart={isStart} pause={pause} handleModalOpen={handleModalOpen} />
           </div>
         )}
       </div>
-      <VerificationModal open={open} handleModalClose={handleModalClose} onReset={onReset} name={timeLabel} />
+      <VerificationModal open={open} handleModalClose={handleModalClose} onReset={onReset} name={session ? name : '休憩'} />
       <audio id="beep" preload="auto" src={chime} ref={chimeAudioBeep} onEnded={playMitanVoice}></audio>
-      <audio id="beep" preload="auto" src={breakSound} ref={audioBeep}></audio>
+      <audio id="beep" preload="auto" src={breakSound} ref={minaAudioBeep}></audio>
       <SimpleBottomNavigation />
     </div>
   );

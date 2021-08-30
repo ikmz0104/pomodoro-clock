@@ -4,3 +4,5 @@ type CategoryProps = {
   time: number;
   userId: string;
 };
+
+type voidFunc = () => void;
