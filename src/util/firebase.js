@@ -107,9 +107,6 @@ class Firebase {
     getSeries = async(userId) => {
         const getRecords = async(userId, categoryId) => {
             console.log(categoryId) //categoryIdは2つともちゃんと取れてる
-            let data = [];
-            let tasksId = [categoryId];
-            console.log(tasksId[0], tasksId[1])
             const ref = db.collection('users').doc(userId).collection('record').where('categoryId', '==', categoryId);
             try {
                 const querySnapshot = await ref.get();
@@ -119,10 +116,9 @@ class Firebase {
                             data.push({ x: doc.data().date, y: doc.data().time });
                         }
                     }),
-
                     console.log(data)
                 );
-                return data1;
+                return data;
             } catch (e) {
                 throw e;
             }
