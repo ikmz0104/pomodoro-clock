@@ -16,6 +16,7 @@ import { CategoryModal } from 'views/CategoryModal';
 import { CategoryDeleteModal } from 'views/CategoryDeleteModal';
 import { useAuth } from 'hooks/useAuth';
 import SimpleBottomNavigation from 'views/Navigation';
+import { useBool } from 'hooks/useCommon';
 
 type PropsOptional = {
   onValueChange: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -76,7 +77,7 @@ const SettingPage: React.FC<SettingProps> = ({ currentUser }) => {
   const [categories, setCategories] = useState([]);
   const [selectedOption, setSelectedOption] = useState({ name: '', time: 0, id: '', userId: '' });
   //modal state
-  const [open, setOpen] = useState(false);
+  const [open, handleModalOpen, handleModalClose] = useBool(false);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -88,7 +89,7 @@ const SettingPage: React.FC<SettingProps> = ({ currentUser }) => {
     fetchData();
   }, []);
 
-  const getCategories = async (userId: any) => {
+  const getCategories = async (userId: string) => {
     try {
       const categories = await firebase.getCategories(userId);
       setCategories(categories);
@@ -99,42 +100,40 @@ const SettingPage: React.FC<SettingProps> = ({ currentUser }) => {
 
   const handleListItemClick = (category: any) => {
     setSelectedOption(category);
-    setOpen(true);
+    handleModalOpen();
   };
 
   const handleAddCategoryClick = () => {
     setSelectedOption(null);
-    setOpen(true);
+    handleModalOpen();
   };
 
   const handleDeleteCategoryClick = () => {
-    setOpen(true);
+    handleModalOpen();
   };
 
   const handleBack = async () => {
     router.back();
   };
 
-  //Modal
-  const handleModalClose = () => {
-    setOpen(false);
-  };
+  // //Modal
+  // const handleModalClose = () => {
+  //   setOpen(false);
+  // };
 
-  const handleModalChange = async (name, time) => {
+  const handleModalChange = async (name: string, time: number) => {
     if (userId) {
+      const categoryData = { name: name, time: time, userId: userId };
       if (selectedOption) {
         //カテゴリーの編集
-        const categoryData = { name: name, time: time, userId: userId };
         await firebase.updateCategory(selectedOption.id, categoryData);
-        await getCategories(userId);
       } else {
         //カテゴリーの追加
-        const categoryData = { name: name, time: time, userId: userId };
         await firebase.createCategory(categoryData);
-        await getCategories(userId);
       }
+      await getCategories(userId);
     }
-    setOpen(false);
+    handleModalClose();
   };
 
   //カテゴリー削除
