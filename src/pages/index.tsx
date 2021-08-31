@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import nookies from 'nookies';
 import { GetServerSidePropsContext } from 'next';
@@ -86,7 +86,6 @@ const Home = ({ currentUser }) => {
 
   const getSeries = async (userId: string) => {
     try {
-      console.log(userId);
       const series = await firebase.getSeries(userId);
       setSeries(series);
     } catch (e) {
