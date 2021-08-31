@@ -48,7 +48,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 const Home = ({ currentUser }) => {
   const [categories, setCategories] = useState([]);
   const [series, setSeries] = useState([]);
-  const [memory setMemory] = useState([]);
+  const [memory, setMemory] = useState([]);
   const router = useRouter();
 
   const logOut = async () => {

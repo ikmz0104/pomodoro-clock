@@ -5,6 +5,7 @@ class Firebase {
         this.users = db.collection('users');
         this.categories = db.collection('categories');
         this.sounds = db.collection('sounds');
+        this.sounds = db.collection('memory');
     }
 
     getUserData = async(userId) => {
@@ -145,6 +146,25 @@ class Firebase {
             throw e;
         }
     };
+
+
+    getMemory = async(id) => {
+        let data = {};
+        const ref = this.memories.doc(id);
+        try {
+            await ref.get().then((doc) => {
+                if (doc.exists) {
+                    data.id = doc.id;
+                    data = doc.data();
+                }
+            });
+            return data;
+        } catch (e) {
+            throw e;
+        }
+
+    };
+
 }
 
 const Fire = new Firebase();
