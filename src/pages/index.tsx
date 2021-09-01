@@ -6,7 +6,7 @@ import firebase from 'util/firebase';
 import CategoryList from 'components/CategoryList';
 import Header from 'components/Header';
 import Calendar from 'views/HeatCalendar';
-import { auth } from '../../lib/db';
+import { auth, db } from '../../lib/db';
 import { useRouter } from 'next/router';
 import DesktopAccessDisabledIcon from '@material-ui/icons/DesktopAccessDisabled';
 import styles from '../styles/auth.module.css';
@@ -49,7 +49,20 @@ const Home = ({ currentUser }) => {
   const [categories, setCategories] = useState([]);
   const [series, setSeries] = useState([]);
   const [memory, setMemory] = useState([]);
+  const [tasks, setTasks] = useState([{ id: "", title: "" }]); //FirebaseのCloud Firestoreから取得したコレクションのステートを保持(すでに手動で作成済みの場合)
   const router = useRouter();
+
+  useEffect(() => {
+    const unSub = db.collection("tasks").onSnapshot((snapshot) => {
+      setTasks(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          title: doc.data().title,
+        }))
+      );
+    });
+    return () => unSub(); //ブラウザリフレッシュでアンマウントされた際にコンポーネントがReactDOMから解放されるので実行される関数：UnsubをCleanUp(FirebaseのDB変更監視を停止)する
+  }, []);
 
   const logOut = async () => {
     try {
@@ -102,6 +115,9 @@ const Home = ({ currentUser }) => {
       <div className="content">
         <div>{currentUser ? <DesktopAccessDisabledIcon onClick={logOut} className={styles.logout_icon} /> : ''}</div>
         <hr></hr>
+        <div>
+          {tasks.map((task)=><h3>{task.title}</h3>)}
+        </div>
         <div style={{ marginBottom: 40 }}>
           <p className="title">カテゴリー</p>
           <CategoryList categories={categories} />

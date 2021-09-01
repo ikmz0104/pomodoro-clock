@@ -5,7 +5,7 @@ class Firebase {
         this.users = db.collection('users');
         this.categories = db.collection('categories');
         this.sounds = db.collection('sounds');
-        this.sounds = db.collection('memory');
+        this.memory = db.collection('memory');
     }
 
     getUserData = async(userId) => {
