@@ -2,8 +2,8 @@ import React from "react"
 import {LineChart, XAxis, YAxis, Tooltip, CartesianGrid, Line, Legend} from "recharts"
 
 type GraphData = {
-  x: string;
-  y: number;
+  name: string;
+  memory: number;
 };
 
 type Memory = {
@@ -16,14 +16,21 @@ type GraphProps = {
 };
 
   const EbbinghausForgettingGraph: React.FC<GraphProps> = ({ memory }) => {
-    const state = {
-      memory: memory,
-    }
+    const data: any = [
+      {
+        "name": "0",
+        "memory": 100,
+      },
+      {
+        "name": "20min",
+        "memory": 58,
+      },
+    ]
     return(
       <LineChart
         width={450}
         height={400}
-        data={state.memory}
+        data={data}
         margin={{ top: 5, bottom: 5 }}
       >
         <CartesianGrid stroke="#CCCCCC" strokeDasharray="3" />

@@ -5,7 +5,7 @@ class Firebase {
         this.users = db.collection('users');
         this.categories = db.collection('categories');
         this.sounds = db.collection('sounds');
-        this.memory = db.collection('memory');
+        this.memories = db.collection('memories');
     }
 
     getUserData = async(userId) => {
@@ -107,7 +107,7 @@ class Firebase {
 
     getSeries = async(userId) => {
         const getRecords = async(userId, categoryId) => {
-            console.log(categoryId) //categoryIdは2つともちゃんと取れてる
+            console.log(categoryId); //categoryIdは2つともちゃんと取れてる
 
             let data = [];
             const ref = db.collection('users').doc(userId).collection('record').where('categoryId', '==', categoryId);
@@ -119,7 +119,7 @@ class Firebase {
                             data.push({ x: doc.data().date, y: doc.data().time });
                         }
                     }),
-                    console.log(data)
+                    console.log(data),
                 );
                 return data;
             } catch (e) {
@@ -146,25 +146,6 @@ class Firebase {
             throw e;
         }
     };
-
-
-    getMemory = async(id) => {
-        let data = {};
-        const ref = this.memories.doc(id);
-        try {
-            await ref.get().then((doc) => {
-                if (doc.exists) {
-                    data.id = doc.id;
-                    data = doc.data();
-                }
-            });
-            return data;
-        } catch (e) {
-            throw e;
-        }
-
-    };
-
 }
 
 const Fire = new Firebase();
