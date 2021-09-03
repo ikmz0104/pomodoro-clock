@@ -5,7 +5,6 @@ class Firebase {
         this.users = db.collection('users');
         this.categories = db.collection('categories');
         this.sounds = db.collection('sounds');
-        this.memories = db.collection('memories');
     }
 
     getUserData = async(userId) => {
@@ -89,6 +88,7 @@ class Firebase {
                 querySnapshot.forEach(function(doc) {
                     breakData.push(doc.data().url);
                 });
+
             });
             data.breakData = breakData;
             await ref
@@ -140,8 +140,48 @@ class Firebase {
                     }),
                 );
             });
-            console.log('return');
             return series;
+        } catch (e) {
+            throw e;
+        }
+    };
+
+    getMemories = async(userId) => {
+        const getRates = async(userId, categoryId) => {
+
+            let data = [];
+            const ref = db.collection('users').doc(userId).collection('memory').where('categoryId', '==', categoryId);
+            try {
+                const querySnapshot = await ref.get();
+                await Promise.all(
+                    querySnapshot.docs.map((doc) => {
+                        if (doc.exists) {
+                            data.push({ x: doc.data().forgetting, y: doc.data().memory });
+                        }
+                    }),
+                    console.log(data),
+                );
+                return data;
+            } catch (e) {
+                throw e;
+            }
+        };
+
+        let memory = [];
+        const ref = this.categories.where('userId', '==', userId);
+        try {
+            await ref.get().then(async function(querySnapshot) {
+                await Promise.all(
+                    querySnapshot.docs.map(async(doc) => {
+                        if (doc.exists) {
+                            const records = await getRates(userId, doc.id);
+                            memory.push({ data: records });
+                        }
+                    }),
+                    console.log(memory),
+                );
+            });
+            return memory;
         } catch (e) {
             throw e;
         }

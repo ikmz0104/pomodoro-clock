@@ -64,7 +64,7 @@ const Home = ({ currentUser }) => {
   useEffect(() => {
     async function fetchData() {
       const userId = currentUser; //テストId
-      await Promise.all([getUser(userId), getCategories(userId), getSeries(userId)]);
+      await Promise.all([getUser(userId), getCategories(userId), getSeries(userId), getMemories(userId)]);
     }
     fetchData();
   }, []);
@@ -96,6 +96,15 @@ const Home = ({ currentUser }) => {
     }
   };
 
+  const getMemories = async (userId: string) => {
+    try {
+      console.log(userId);
+      const memory = await firebase.getMemories(userId);
+      setMemory(memory);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <div className="container">
