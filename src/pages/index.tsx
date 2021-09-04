@@ -48,7 +48,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 const Home = ({ currentUser }) => {
   const [categories, setCategories] = useState([]);
   const [series, setSeries] = useState([]);
-  const [memory, setMemory] = useState([]);
+  const [memories, setMemories] = useState([]);
 
   const router = useRouter();
 
@@ -99,8 +99,8 @@ const Home = ({ currentUser }) => {
   const getMemories = async (userId: string) => {
     try {
       console.log(userId);
-      const memory = await firebase.getMemories(userId);
-      setMemory(memory);
+      const memories = await firebase.getMemories(userId);
+      setMemories(memories);
     } catch (e) {
       console.error(e);
     }
@@ -122,7 +122,7 @@ const Home = ({ currentUser }) => {
         </div>
         <div style={{ marginBottom: 40 }}>
           <p className="title">忘却曲線</p>
-          <EbbinghausForgettingGraph memory={memory}/>
+          <EbbinghausForgettingGraph memories={memories}/>
         </div>
         <div style={{ marginBottom: 40 }}>
           <p className="title">カレンダー</p>

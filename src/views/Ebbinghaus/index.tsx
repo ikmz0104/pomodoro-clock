@@ -6,24 +6,21 @@ type GraphData = {
   memory: number;
 };
 
-type Memory = {
-  data: GraphData[];
+type Memories = {
+  memory: GraphData[];
 }[];
 
 type GraphProps = {
-  memory: Memory;
+  memories: Memories;
 };
 
-  const EbbinghausForgettingGraph: React.FC<GraphProps> = ({ memory }) => {
-    const state = {
-      memory: memory,
-    }
+  const EbbinghausForgettingGraph: React.FC<GraphProps> = ({ memories }) => {
 
     return(
       <LineChart
         width={450}
         height={400}
-        data={state.memory}
+        data={memories[0].memory}
         margin={{ top: 5, bottom: 5 }}
       >
         <CartesianGrid stroke="#CCCCCC" strokeDasharray="3" />

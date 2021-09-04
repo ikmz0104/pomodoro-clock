@@ -166,21 +166,20 @@ class Firebase {
             }
         };
 
-        let memory = [];
+        let memorys = [];
         const ref = this.categories.where('userId', '==', userId);
         try {
             await ref.get().then(async function(querySnapshot) {
                 await Promise.all(
                     querySnapshot.docs.map(async(doc) => {
                         if (doc.exists) {
-                            const records = await getRates(userId, doc.id);
-                            memory.push({ data: records });
+                            const memory = await getRates(userId, doc.id);
+                            memorys.push({ memory });
                         }
                     }),
-                    console.log(memory),
                 );
             });
-            return memory;
+            return memorys;
         } catch (e) {
             throw e;
         }
