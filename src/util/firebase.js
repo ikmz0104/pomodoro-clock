@@ -156,10 +156,9 @@ class Firebase {
                 await Promise.all(
                     querySnapshot.docs.map((doc) => {
                         if (doc.exists) {
-                            data.push({ x: doc.data().forgetting, y: doc.data().memory });
+                            data.push({ name: doc.data().name, memory: doc.data().memory });
                         }
                     }),
-                    console.log(data),
                 );
                 return data;
             } catch (e) {

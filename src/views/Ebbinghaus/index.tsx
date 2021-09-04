@@ -2,8 +2,8 @@ import React from "react"
 import {LineChart, XAxis, YAxis, Tooltip, CartesianGrid, Line, Legend} from "recharts"
 
 type GraphData = {
-  x: string;
-  y: number;
+  name: string;
+  memory: number;
 };
 
 type Memory = {
@@ -15,16 +15,6 @@ type GraphProps = {
 };
 
   const EbbinghausForgettingGraph: React.FC<GraphProps> = ({ memory }) => {
-    // const data: any = [
-    //   {
-    //     "name": "0",
-    //     "memory": 100,
-    //   },
-    //   {
-    //     "name": "20min",
-    //     "memory": 58,
-    //   },
-    // ]
     const state = {
       memory: memory,
     }
