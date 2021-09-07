@@ -1,47 +1,26 @@
 import React from "react"
 import {LineChart, XAxis, YAxis, Tooltip, CartesianGrid, Line, Legend} from "recharts"
 
-export default class EbbinghausForgettingGraph extends React.Component {
-  render() {
-    const data: any = [
-      {
-        "name": "0",
-        "memory": 100,
-      },
-      {
-        "name": "20min",
-        "memory": 58,
-      },
-      {
-        "name": "1h",
-        "memory": 44,
-      },
-      {
-        "name": "9h",
-        "memory": 35,
-      },
-      {
-        "name": "24h",
-        "memory": 34,
-      },
-      {
-        "name": "2days",
-        "memory": 27,
-      },
-      {
-        "name": "6days",
-        "memory": 25,
-      },
-      {
-        "name": "31days",
-        "memory": 21,
-      },
-    ]
+type GraphData = {
+  name: string;
+  memory: number;
+};
+
+type Memories = {
+  memory: GraphData[];
+}[];
+
+type GraphProps = {
+  memories: Memories;
+};
+
+  const EbbinghausForgettingGraph: React.FC<GraphProps> = ({ memories }) => {
+
     return(
       <LineChart
         width={450}
         height={400}
-        data={data}
+        data={memories[0].memory}
         margin={{ top: 5, bottom: 5 }}
       >
         <CartesianGrid stroke="#CCCCCC" strokeDasharray="3" />
@@ -53,4 +32,5 @@ export default class EbbinghausForgettingGraph extends React.Component {
       </LineChart>
     )
   }
-}
+
+  export default EbbinghausForgettingGraph;

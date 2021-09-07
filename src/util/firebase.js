@@ -88,6 +88,7 @@ class Firebase {
                 querySnapshot.forEach(function(doc) {
                     breakData.push(doc.data().url);
                 });
+
             });
             data.breakData = breakData;
             await ref
@@ -106,7 +107,7 @@ class Firebase {
 
     getSeries = async(userId) => {
         const getRecords = async(userId, categoryId) => {
-            console.log(categoryId) //categoryIdは2つともちゃんと取れてる
+            console.log(categoryId); //categoryIdは2つともちゃんと取れてる
 
             let data = [];
             const ref = db.collection('users').doc(userId).collection('record').where('categoryId', '==', categoryId);
@@ -118,7 +119,7 @@ class Firebase {
                             data.push({ x: doc.data().date, y: doc.data().time });
                         }
                     }),
-                    console.log(data)
+                    console.log(data),
                 );
                 return data;
             } catch (e) {
@@ -139,8 +140,46 @@ class Firebase {
                     }),
                 );
             });
-            console.log('return');
             return series;
+        } catch (e) {
+            throw e;
+        }
+    };
+
+    getMemories = async(userId) => {
+        const getRates = async(userId, categoryId) => {
+
+            let data = [];
+            const ref = db.collection('users').doc(userId).collection('memory').where('categoryId', '==', categoryId);
+            try {
+                const querySnapshot = await ref.get();
+                await Promise.all(
+                    querySnapshot.docs.map((doc) => {
+                        if (doc.exists) {
+                            data.push({ name: doc.data().name, memory: doc.data().memory });
+                        }
+                    }),
+                );
+                return data;
+            } catch (e) {
+                throw e;
+            }
+        };
+
+        let memorys = [];
+        const ref = this.categories.where('userId', '==', userId);
+        try {
+            await ref.get().then(async function(querySnapshot) {
+                await Promise.all(
+                    querySnapshot.docs.map(async(doc) => {
+                        if (doc.exists) {
+                            const memory = await getRates(userId, doc.id);
+                            memorys.push({ memory });
+                        }
+                    }),
+                );
+            });
+            return memorys;
         } catch (e) {
             throw e;
         }

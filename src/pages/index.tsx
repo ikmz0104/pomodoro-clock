@@ -48,6 +48,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 const Home = ({ currentUser }) => {
   const [categories, setCategories] = useState([]);
   const [series, setSeries] = useState([]);
+  const [memories, setMemories] = useState([]);
+
   const router = useRouter();
 
   const logOut = async () => {
@@ -62,7 +64,7 @@ const Home = ({ currentUser }) => {
   useEffect(() => {
     async function fetchData() {
       const userId = currentUser; //テストId
-      await Promise.all([getUser(userId), getCategories(userId), getSeries(userId)]);
+      await Promise.all([getUser(userId), getCategories(userId), getSeries(userId), getMemories(userId)]);
     }
     fetchData();
   }, []);
@@ -93,6 +95,16 @@ const Home = ({ currentUser }) => {
     }
   };
 
+  const getMemories = async (userId: string) => {
+    try {
+      console.log(userId);
+      const memories = await firebase.getMemories(userId);
+      setMemories(memories);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <div className="container">
       <Header title="みーたんタイマー" />
@@ -109,7 +121,7 @@ const Home = ({ currentUser }) => {
         </div>
         <div style={{ marginBottom: 40 }}>
           <p className="title">忘却曲線</p>
-          <EbbinghausForgettingGraph />
+          <EbbinghausForgettingGraph memories={memories}/>
         </div>
         <div style={{ marginBottom: 40 }}>
           <p className="title">カレンダー</p>
