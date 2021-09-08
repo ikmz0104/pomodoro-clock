@@ -20,7 +20,7 @@ type GraphProps = {
       <LineChart
         width={450}
         height={400}
-        data={memories[0].memory}
+        data={memories}
         margin={{ top: 5, bottom: 5 }}
       >
         <CartesianGrid stroke="#CCCCCC" strokeDasharray="3" />

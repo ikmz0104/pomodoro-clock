@@ -135,7 +135,7 @@ const Home = ({ currentUser }) => {
         </div>
         <div style={{ marginBottom: 40 }}>
           <p className="title">カレンダー</p>
-          <Calendar contributes={contributes}/>
+          <Calendar contributes = {contributes}/>
         </div>
       </div>
       <SimpleBottomNavigation />

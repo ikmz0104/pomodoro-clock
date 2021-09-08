@@ -2,12 +2,11 @@ import React from 'react';
 import HeatCalendar from 'react-heat-calendar';
 
 type Graphdata = {
-  date: number;
   someAttr: string;
 }
 
 type Contributes = {
-  contribute: Graphdata[];
+  contribute: Graphdata;
 }
 
 type CalendarProps = {
@@ -20,7 +19,7 @@ const Calendar: React.FC<CalendarProps> = ({contributes}) => {
       beginDate={new Date('2021-06-01')}
       endDate={new Date('2022-02-01')}
       dateField="date"
-      data={contributes}
+      data={contributes[0].color}
     />
   );
 };
