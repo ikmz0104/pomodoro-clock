@@ -184,6 +184,44 @@ class Firebase {
             throw e;
         }
     };
+
+    getContributes = async(userId) => {
+        const getColors = async(userId, categoryId) => {
+            let data = [];
+            const ref = db.collection('users').doc(userId).collection('contribute').where('categoryId', '==', categoryId);
+            try {
+                const querySnapshot = await ref.get();
+                await Promise.all(
+                    querySnapshot.docs.map((doc) => {
+                        if (doc.exists) {
+                            data.push({ date: doc.data().date, someAttr: doc.data().someAttr });
+                        }
+                    }),
+                );
+                return data;
+            } catch (e) {
+                throw e;
+            }
+        };
+
+        let datecolors = [];
+        const ref = this.categories.where('userId', '==', userId);
+        try {
+            await ref.get().then(async function(querySnapshot) {
+                await Promise.all(
+                    querySnapshot.docs.map(async(doc) => {
+                        if (doc.exists) {
+                            const color = await getColors(userId, doc.id);
+                            datecolors.push({ color });
+                        }
+                    }),
+                );
+            });
+            return datecolors;
+        } catch (e) {
+            throw e;
+        }
+    };
 }
 
 const Fire = new Firebase();
