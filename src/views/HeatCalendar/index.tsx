@@ -1,12 +1,12 @@
 import React from 'react';
 import HeatCalendar from 'react-heat-calendar';
 
-type Graphdata = {
+type Calendardate = {
   someAttr: string;
 }
 
 type Contributes = {
-  contribute: Graphdata;
+  contribute: Calendardate;
 }
 
 type CalendarProps = {
