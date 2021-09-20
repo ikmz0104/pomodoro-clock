@@ -20,7 +20,8 @@ type GraphProps = {
       <LineChart
         width={450}
         height={400}
-        data={memories[0].memory}
+        data={memories}
+        //data={memories[0].memory} ⇚デバック時エラー要対応
         margin={{ top: 5, bottom: 5 }}
       >
         <CartesianGrid stroke="#CCCCCC" strokeDasharray="3" />

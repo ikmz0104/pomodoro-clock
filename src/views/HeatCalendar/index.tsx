@@ -19,7 +19,8 @@ const Calendar: React.FC<CalendarProps> = ({contributes}) => {
       beginDate={new Date('2021-06-01')}
       endDate={new Date('2022-02-01')}
       dateField="date"
-      data={contributes[0].color}
+      data={contributes}
+      //data={contributes[0].color} ⇚デバック時エラー要対応
     />
   );
 };
