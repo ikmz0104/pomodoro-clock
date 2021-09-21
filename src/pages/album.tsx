@@ -6,31 +6,56 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+
+const actions = [
+  { icon: <SpeedDialIcon />, name: 'Copy' },
+  { icon: <SpeedDialAction />, name: 'Save' },
+  { icon: <HomeRoundedIcon />, name: 'Print' },
+  { icon: <AccessTimeIcon />, name: 'Share' },
+];
+
 const album = () => {
   return (
     <div className="container">
       <Header title="アルバム" />
       <div className="content">
-      <Box sx={{ width: 500, height: 1000, overflowY: 'scroll' }}>
-      <ImageList variant="masonry" cols={3} gap={8}>
-        {itemData.map((item) => (
-          <ImageListItem key={item.img}>
-            <img
-              src={`${item.img}?w=248&fit=crop&auto=format`}
-              srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-              alt={item.title}
-              loading="lazy"
-            />
-            <ImageListItemBar position="below" title={item.author} />
-          </ImageListItem>
-        ))}
-      </ImageList>
-    </Box>
+        <Box sx={{ width: 500, height: 1000, overflowY: 'scroll' }}>
+          <ImageList variant="masonry" cols={3} gap={8}>
+            {itemData.map((item) => (
+              <ImageListItem key={item.img}>
+                <img
+                  src={`${item.img}?w=248&fit=crop&auto=format`}
+                  srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                  alt={item.title}
+                  loading="lazy"
+                />
+                <ImageListItemBar position="below" title={item.author} />
+              </ImageListItem>
+            ))}
+          </ImageList>
+        </Box>
+        <Box sx={{ height: 320, transform: 'translateZ(0px)', flexGrow: 1 }}>
+          <SpeedDial
+            ariaLabel="SpeedDial openIcon example"
+            sx={{ position: 'absolute', bottom: 16, right: 16 }}
+            icon={<SpeedDialIcon openIcon={<AccountCircleIcon />} />}
+          >
+            {actions.map((action) => (
+              <SpeedDialAction key={action.name} icon={action.icon} tooltipTitle={action.name} />
+            ))}
+          </SpeedDial>
+        </Box>
       </div>
       <SimpleBottomNavigation />
     </div>
-  )
-}
+  );
+};
 
 const itemData = [
   {
@@ -95,4 +120,4 @@ const itemData = [
   },
 ];
 
-export default album
+export default album;
