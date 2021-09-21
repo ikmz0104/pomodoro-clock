@@ -6,12 +6,15 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AlbumIcon from '@material-ui/icons/Album';
 
 const home_icon = < HomeRoundedIcon color = "primary"
 fontSize = "large" / > ;
 const work_icon = < AccessTimeIcon color = "primary"
 fontSize = "large" / > ;
 const user_icon = < AccountCircleIcon color = "primary"
+fontSize = "large" / > ;
+const album_icon = < AlbumIcon color = "primary"
 fontSize = "large" / > ;
 
 const Navigations = [{
@@ -28,6 +31,11 @@ const Navigations = [{
         label: 'ユーザー',
         value: 'user',
         icon: user_icon,
+    },
+    {
+        label: 'アルバム',
+        value: 'album',
+        icon: album_icon,
     },
 ];
 
