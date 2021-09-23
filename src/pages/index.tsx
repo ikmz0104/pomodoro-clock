@@ -5,7 +5,6 @@ import { GetServerSidePropsContext } from 'next';
 import firebase from 'util/firebase';
 import CategoryList from 'components/CategoryList';
 import Header from 'components/Header';
-import Calendar from 'views/HeatCalendar';
 import { auth } from '../../lib/db';
 import { useRouter } from 'next/router';
 import DesktopAccessDisabledIcon from '@material-ui/icons/DesktopAccessDisabled';
@@ -47,7 +46,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 const Home = ({ currentUser }) => {
   const [categories, setCategories] = useState([]);
   const [series, setSeries] = useState([]);
-  const [contributes, setContributes] = useState([]);
 
   const router = useRouter();
 
@@ -63,7 +61,7 @@ const Home = ({ currentUser }) => {
   useEffect(() => {
     async function fetchData() {
       const userId = currentUser; //テストId
-      await Promise.all([getUser(userId), getCategories(userId), getSeries(userId), getContributes(userId)]);
+      await Promise.all([getUser(userId), getCategories(userId), getSeries(userId)]);
     }
     fetchData();
   }, []);
@@ -94,15 +92,6 @@ const Home = ({ currentUser }) => {
     }
   };
 
-  const getContributes = async (userId: string) => {
-    try {
-      const contributes = await firebase.getContributes(userId);
-      setContributes(contributes)
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   return (
     <div className="container">
       <Header title="みーたんタイマー" />
@@ -113,13 +102,9 @@ const Home = ({ currentUser }) => {
           <p className="title">カテゴリー</p>
           <CategoryList categories={categories} />
         </div>
-        <div style={{ marginBottom: 40 }}>
+        <div style={{ marginBottom: 0 }}>
           <p className="title">作業時間</p>
           <DynamicGraphComponentWithNoSSR series={series} />
-        </div>
-        <div style={{ marginBottom: 100 }}>
-          <p className="title">カレンダー</p>
-          <Calendar contributes = {contributes}/>
         </div>
       </div>
       <SimpleBottomNavigation />
