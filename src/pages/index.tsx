@@ -117,7 +117,7 @@ const Home = ({ currentUser }) => {
           <p className="title">作業時間</p>
           <DynamicGraphComponentWithNoSSR series={series} />
         </div>
-        <div style={{ marginBottom: 40 }}>
+        <div style={{ marginBottom: 100 }}>
           <p className="title">カレンダー</p>
           <Calendar contributes = {contributes}/>
         </div>
