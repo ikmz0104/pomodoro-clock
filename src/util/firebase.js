@@ -146,45 +146,6 @@ class Firebase {
         }
     };
 
-    getMemories = async(userId) => {
-        const getRates = async(userId, categoryId) => {
-
-            let data = [];
-            const ref = db.collection('users').doc(userId).collection('memory').where('categoryId', '==', categoryId);
-            try {
-                const querySnapshot = await ref.get();
-                await Promise.all(
-                    querySnapshot.docs.map((doc) => {
-                        if (doc.exists) {
-                            data.push({ name: doc.data().name, memory: doc.data().memory });
-                        }
-                    }),
-                );
-                return data;
-            } catch (e) {
-                throw e;
-            }
-        };
-
-        let memorys = [];
-        const ref = this.categories.where('userId', '==', userId);
-        try {
-            await ref.get().then(async function(querySnapshot) {
-                await Promise.all(
-                    querySnapshot.docs.map(async(doc) => {
-                        if (doc.exists) {
-                            const memory = await getRates(userId, doc.id);
-                            memorys.push({ memory });
-                        }
-                    }),
-                );
-            });
-            return memorys;
-        } catch (e) {
-            throw e;
-        }
-    };
-
     getContributes = async(userId) => {
         const getColors = async(userId, categoryId) => {
             let data = [];

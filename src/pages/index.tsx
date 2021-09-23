@@ -11,7 +11,6 @@ import { useRouter } from 'next/router';
 import DesktopAccessDisabledIcon from '@material-ui/icons/DesktopAccessDisabled';
 import styles from '../styles/auth.module.css';
 import SimpleBottomNavigation from 'views/Navigation';
-import EbbinghausForgettingGraph from 'views/Ebbinghaus/index';
 
 //ApexCharts読み込むのにNext.jsで必要な設定
 const DynamicGraphComponentWithNoSSR = dynamic(() => import('../views/ApexCharts/index'), { ssr: false });
@@ -48,7 +47,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 const Home = ({ currentUser }) => {
   const [categories, setCategories] = useState([]);
   const [series, setSeries] = useState([]);
-  const [memories, setMemories] = useState([]);
   const [contributes, setContributes] = useState([]);
 
   const router = useRouter();
@@ -65,7 +63,7 @@ const Home = ({ currentUser }) => {
   useEffect(() => {
     async function fetchData() {
       const userId = currentUser; //テストId
-      await Promise.all([getUser(userId), getCategories(userId), getSeries(userId), getMemories(userId), getContributes(userId)]);
+      await Promise.all([getUser(userId), getCategories(userId), getSeries(userId), getContributes(userId)]);
     }
     fetchData();
   }, []);
@@ -96,16 +94,6 @@ const Home = ({ currentUser }) => {
     }
   };
 
-  const getMemories = async (userId: string) => {
-    try {
-      console.log(userId);
-      const memories = await firebase.getMemories(userId);
-      setMemories(memories);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   const getContributes = async (userId: string) => {
     try {
       const contributes = await firebase.getContributes(userId);
@@ -129,11 +117,7 @@ const Home = ({ currentUser }) => {
           <p className="title">作業時間</p>
           <DynamicGraphComponentWithNoSSR series={series} />
         </div>
-        <div style={{ marginBottom: 40 }}>
-          <p className="title">忘却曲線</p>
-          <EbbinghausForgettingGraph memories={memories}/>
-        </div>
-        <div style={{ marginBottom: 40 }}>
+        <div style={{ marginBottom: 100 }}>
           <p className="title">カレンダー</p>
           <Calendar contributes = {contributes}/>
         </div>
