@@ -9,6 +9,7 @@ import { VerificationModal } from 'views/VerificationModal';
 import SimpleBottomNavigation from 'views/Navigation';
 import { usePhaseControl, useAudioRef } from 'hooks/useWork';
 import { useBool } from 'hooks/useCommon';
+import { db } from '../../lib/db';
 
 const WorkPage: React.FC = (props) => {
   const router: any = useRouter();
@@ -107,6 +108,12 @@ const WorkPage: React.FC = (props) => {
   const playMitanVoice = () => {
     setChimeAudioDefault();
     minaAudioPlay();
+  };
+
+  //時間を累積する！
+  const CompleteTasks = (e) => {
+    db.collection('users').doc().collection('record').doc().add({ time: defaultSessionLength });
+    //dummy code : if (doc.exists) ? <time> + defaultSessionLengthset : set defaultSessionLength
   };
 
   return (
