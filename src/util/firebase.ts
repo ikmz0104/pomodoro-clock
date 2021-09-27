@@ -1,5 +1,6 @@
 import { Category } from '@material-ui/icons';
 import { db } from '../../lib/db';
+import moment from 'moment';
 
 class Firebase {
   users: firebase.default.firestore.CollectionReference;
@@ -131,11 +132,26 @@ class Firebase {
         await Promise.all(
           querySnapshot.docs.map((doc) => {
             if (doc.exists) {
-              data.push({ x: doc.data().date, y: doc.data().time });
+              console.log(moment(doc.data().date).startOf('day').valueOf());
+              data.push({ x: moment(doc.data().date).startOf('day').valueOf(), y: doc.data().time });
             }
           }),
         );
-        return data;
+        const groupBy = (array, getKey) =>
+          Array.from(
+            array.reduce((map, cur, idx, src) => {
+              const key = getKey(cur, idx, src);
+              const list = map.get(key);
+              if (list) list.push(cur);
+              else map.set(key, [cur]);
+              return map;
+            }, new Map()),
+          );
+        const result = groupBy(data, (i) => i.x).map(([date, data]) => ({
+          x: date,
+          y: data.reduce((sum, i) => sum + i.y, 0),
+        }));
+        return result;
       } catch (e) {
         throw e;
       }
