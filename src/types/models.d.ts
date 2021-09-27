@@ -1,4 +1,5 @@
 interface Category {
+  id?: string;
   name: string;
   time: number;
   userId: string;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import nookies from 'nookies';
 import { useRouter } from 'next/router';
 import Header from 'components/Header';
 import Times from 'components/Times';
@@ -9,8 +10,42 @@ import { VerificationModal } from 'views/VerificationModal';
 import SimpleBottomNavigation from 'views/Navigation';
 import { usePhaseControl, useAudioRef } from 'hooks/useWork';
 import { useBool } from 'hooks/useCommon';
+import { GetServerSidePropsContext } from 'next';
 
-const WorkPage: React.FC = (props) => {
+//ssr
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  try {
+    //cookieのuserid取得
+    //ssrだとhooksが使えずuseContextで取得できなかったから
+    const cookies = nookies.get(ctx);
+    const { uid } = cookies;
+    if (uid == null || uid == '') {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
+
+    return {
+      props: { userId: uid },
+    };
+  } catch (err) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+};
+
+type WorkPageProps = {
+  userId: string;
+};
+
+const WorkPage: React.FC<WorkPageProps> = ({ userId }) => {
   const router: any = useRouter();
   const defaultBreakLength = '5';
 
@@ -51,12 +86,28 @@ const WorkPage: React.FC = (props) => {
     }
   }, [router.isReady]);
 
+  //休憩時間になった瞬間に作業時間dbに記録するための。
+  useEffect(() => {
+    if (!session) {
+      insertRecord();
+    }
+  }, [session]);
+
+  const insertRecord = () => {
+    if (!session) {
+      firebase.setRecord(userId, router.query.id, sessionLength);
+    } else {
+      const recordTime = Math.floor(((sessionLength * 60 - timeLeftInSecond) / 60) * 10) / 10;
+      firebase.setRecord(userId, router.query.id, recordTime);
+    }
+  };
+
   const getCategory = async (id: string) => {
     const category = await firebase.getCategory(id);
     setName(category.name);
-    setDefaultSessionLength(category.time);
-    setTimeLeftInSecond(Number.parseInt(category.time, 10) * 60);
-    setSessionLength(Number.parseInt(category.time, 10));
+    setDefaultSessionLength(category.time.toString());
+    setTimeLeftInSecond(category.time * 60);
+    setSessionLength(category.time);
   };
 
   const getSounds = async () => {
@@ -73,6 +124,7 @@ const WorkPage: React.FC = (props) => {
 
   //タイマーのリセット(終了するボタンを押した時)
   const onReset = () => {
+    insertRecord(); //作業時間記録
     setBreakLength(Number.parseInt(defaultBreakLength, 10));
     setSessionLength(Number.parseInt(defaultSessionLength, 10));
     setTimeLeftInSecond(Number.parseInt(defaultSessionLength, 10) * 60);

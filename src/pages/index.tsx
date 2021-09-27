@@ -44,8 +44,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 };
 
 const Home = ({ currentUser }) => {
-  const [categories, setCategories] = useState([]);
-  const [series, setSeries] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [series, setSeries] = useState<Series[]>([]);
 
   const router = useRouter();
 

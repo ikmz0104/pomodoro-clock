@@ -13,7 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { CategoryModal } from 'views/CategoryModal';
-import { CategoryDeleteModal } from 'views/CategoryDeleteModal';
+// import { CategoryDeleteModal } from 'views/CategoryDeleteModal';
 import { useAuth } from 'hooks/useAuth';
 import SimpleBottomNavigation from 'views/Navigation';
 import { useBool } from 'hooks/useCommon';
@@ -21,7 +21,7 @@ import { useBool } from 'hooks/useCommon';
 type PropsOptional = {
   onValueChange: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   handleListItemDelete: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  category: CategoryProps;
+  category: Category;
 };
 
 const CategoryList = React.memo<PropsOptional>(({ onValueChange, category, handleListItemDelete }) => {
@@ -73,8 +73,8 @@ const SettingPage: React.FC<SettingProps> = ({ currentUser }) => {
   const router = useRouter();
 
   //state
-  const [userId, setUserId] = useState(null);
-  const [categories, setCategories] = useState([]);
+  const [userId, setUserId] = useState<string>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedOption, setSelectedOption] = useState({ name: '', time: 0, id: '', userId: '' });
   //modal state
   const [open, handleModalOpen, handleModalClose] = useBool(false);
@@ -123,7 +123,7 @@ const SettingPage: React.FC<SettingProps> = ({ currentUser }) => {
 
   const handleModalChange = async (name: string, time: number) => {
     if (userId) {
-      const categoryData = { name: name, time: time, userId: userId };
+      const categoryData: Category = { name: name, time: time, userId: userId };
       if (selectedOption) {
         //カテゴリーの編集
         await firebase.updateCategory(selectedOption.id, categoryData);
