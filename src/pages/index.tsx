@@ -90,7 +90,6 @@ const Home = ({ currentUser }) => {
           <DynamicGraphComponentWithNoSSR series={series} />
         </div>
       </div>
-      <SimpleBottomNavigation />
     </div>
   );
 };
