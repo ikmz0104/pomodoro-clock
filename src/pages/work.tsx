@@ -50,7 +50,7 @@ const WorkPage: React.FC<WorkPageProps> = ({ userId }) => {
   const defaultBreakLength = '5';
 
   //state
-  const [name, setName] = useState<string>('みーたん！');
+  const [name, setName] = useState<string>('');
   const [defaultSessionLength, setDefaultSessionLength] = useState<string>('25');
   const [isStart, setIsStart] = useState<boolean>(false);
   const [pause, setPause] = useState<boolean>(false);
@@ -164,7 +164,7 @@ const WorkPage: React.FC<WorkPageProps> = ({ userId }) => {
   return (
     <div className="container">
       <div className={!session ? 'bg_test' : ''}>
-        <Header title={timeLabel} />
+        <Header title={name} />
         {!session ? (
           <div className={styles.container}>
             <Times session={session} timeLeftInSecond={timeLeftInSecond} timeLabel={session ? name : '休憩'} />
