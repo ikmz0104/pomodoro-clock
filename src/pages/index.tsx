@@ -5,10 +5,6 @@ import { GetServerSidePropsContext } from 'next';
 import firebase from 'util/firebase';
 import CategoryList from 'components/CategoryList';
 import Header from 'components/Header';
-import { auth } from '../../lib/db';
-import { useRouter } from 'next/router';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import styles from '../styles/auth.module.css';
 import SimpleBottomNavigation from 'views/Navigation';
 
 //ApexCharts読み込むのにNext.jsで必要な設定
@@ -46,17 +42,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 const Home = ({ currentUser }) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [series, setSeries] = useState<Series[]>([]);
-
-  const router = useRouter();
-
-  const logOut = async () => {
-    try {
-      await auth.signOut();
-      router.push('/login');
-    } catch (error) {
-      alert(error.message);
-    }
-  };
 
   useEffect(() => {
     async function fetchData() {
@@ -96,7 +81,6 @@ const Home = ({ currentUser }) => {
     <div className="container">
       <Header title="みーたんタイマー" />
       <div className="content">
-        <div>{currentUser ? <ExitToAppIcon onClick={logOut} className={styles.logout_icon} /> : ''}</div>
         <hr></hr>
         <div style={{ marginBottom: 40 }}>
           <p className="title">カテゴリー</p>
