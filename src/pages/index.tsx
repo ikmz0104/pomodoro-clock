@@ -1,59 +1,96 @@
-import React from 'react';
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+import nookies from 'nookies';
+import { GetServerSidePropsContext } from 'next';
+import firebase from 'util/firebase';
+import CategoryList from 'components/CategoryList';
+import Header from 'components/Header';
+import SimpleBottomNavigation from 'views/Navigation';
 
-const Home: React.FC = () => {
+//ApexCharts読み込むのにNext.jsで必要な設定
+const DynamicGraphComponentWithNoSSR = dynamic(() => import('../views/ApexCharts/index'), { ssr: false });
+
+//ssr
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  try {
+    //cookieのuserid取得
+    //ssrだとhooksが使えずuseContextで取得できなかったから
+    const cookies = nookies.get(ctx);
+    const { uid } = cookies;
+    if (uid == null || uid == '') {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
+
+    return {
+      props: { currentUser: uid },
+    };
+  } catch (err) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+};
+
+const Home = ({ currentUser }) => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [series, setSeries] = useState<Series[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const userId = currentUser; //テストId
+      await Promise.all([getUser(userId), getCategories(userId), getSeries(userId)]);
+    }
+    fetchData();
+  }, []);
+
+  const getUser = async (userId: string) => {
+    try {
+      const user = await firebase.getUserData(userId);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getCategories = async (userId: string) => {
+    try {
+      const categories = await firebase.getCategories(userId);
+      setCategories(categories);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getSeries = async (userId: string) => {
+    try {
+      const series = await firebase.getSeries(userId);
+      setSeries(series);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.ts!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing <code className={styles.code}>pages/index.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a href="https://github.com/vercel/next.js/tree/master/examples" className={styles.card}>
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>Instantly deploy your Next.js site to a public URL with Vercel.</p>
-          </a>
+    <div className="container">
+      <Header title="みーたんタイマー" />
+      <div className="content">
+        <div style={{ marginBottom: 40 }}>
+          <p className="title">カテゴリー</p>
+          <CategoryList categories={categories} />
         </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+        <div style={{ marginBottom: 0 }}>
+          <p className="title">作業時間</p>
+          <DynamicGraphComponentWithNoSSR series={series} />
+        </div>
+      </div>
+      <SimpleBottomNavigation />
     </div>
   );
 };

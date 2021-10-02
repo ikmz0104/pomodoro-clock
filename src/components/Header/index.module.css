@@ -1,0 +1,15 @@
+.topnav {
+  /* overflow: hidden; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px 0px 40px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  max-width: 500px;
+}
+
+.logout_icon {
+  cursor: pointer;
+}
