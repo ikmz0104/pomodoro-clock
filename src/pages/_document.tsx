@@ -2,10 +2,28 @@ import Document, { DocumentContext, Html, Head, Main, NextScript } from 'next/do
 import { ServerStyleSheets as MaterialUiServerStyleSheets } from '@material-ui/styles';
 
 class CustomDocument extends Document {
+  url = ''; //サイトurl
+  title = 'みーたんタイマー';
+  description = 'みーたんのタイマー';
+  image = ''; //サムネ画像url
+
   render(): JSX.Element {
     return (
       <Html lang="ja">
-        <Head />
+        <Head>
+          <title>{this.title}</title>
+          <meta name="description" content={this.description} />
+          <meta name="theme-color" content="#333" />
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content={this.title} />
+          {/* <meta property="og:url" content={this.url} /> */}
+          <meta property="og:description" content={this.description} />
+          <meta property="og:site_name" content={this.title} />
+          <meta property="og:image" content={this.image} />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={this.title} />
+          <meta name="twitter:image" content={this.image} />
+        </Head>
         <body>
           <Main />
           <NextScript />
