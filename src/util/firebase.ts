@@ -132,7 +132,6 @@ class Firebase {
         await Promise.all(
           querySnapshot.docs.map((doc) => {
             if (doc.exists) {
-              console.log(moment(doc.data().date).startOf('day').valueOf());
               data.push({ x: moment(doc.data().date).startOf('day').valueOf(), y: doc.data().time });
             }
           }),

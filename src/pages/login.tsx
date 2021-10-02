@@ -108,10 +108,8 @@ const Login: React.FC = () => {
     } catch (err) {
       setLoading(false);
       if (err.code === 'auth/invalid-email' || err.code === 'auth/user-disabled' || err.code === 'auth/user-not-found') {
-        console.log('a', err.code);
         setErrorEmail(true);
       } else if (err.code === 'auth/wrong-password') {
-        console.log('b', err.code);
         setErrorPassword(true);
       }
       setErrorMessage(err.message);

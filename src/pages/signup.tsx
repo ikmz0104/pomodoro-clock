@@ -65,7 +65,6 @@ const SignUp = () => {
       await auth.createUserWithEmailAndPassword(email, password);
       Router.push('/login');
     } catch (err) {
-      console.log(err);
       if (err.code === 'auth/invalid-email' || err.code === 'auth/email-already-in-use') {
         setErrorEmail(true);
       } else if (err.code === 'auth/operation-not-allowed' || err.code === 'auth/weak-password') {

@@ -21,7 +21,23 @@ const Graph: React.FC<GraphProps> = ({ series }) => {
     options: {
       chart: {
         height: 350,
-        type: "area" || "line" || "bar" || "histogram" || "pie" || "donut" || "radialBar" || "scatter" || "bubble" || "heatmap" || "treemap" || "boxPlot" || "candlestick" || "radar" || "polarArea" || "rangeBar",
+        type:
+          'area' ||
+          'line' ||
+          'bar' ||
+          'histogram' ||
+          'pie' ||
+          'donut' ||
+          'radialBar' ||
+          'scatter' ||
+          'bubble' ||
+          'heatmap' ||
+          'treemap' ||
+          'boxPlot' ||
+          'candlestick' ||
+          'radar' ||
+          'polarArea' ||
+          'rangeBar',
       },
       dataLabels: {
         enabled: false,
@@ -50,7 +66,6 @@ const Graph: React.FC<GraphProps> = ({ series }) => {
 
   //record内のdateに登録する値(number)
   let date = new Date('2021/08/26').getTime();
-  console.log(date);
 
   return (
     <div id="chart">
