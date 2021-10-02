@@ -27,10 +27,4 @@ function CustomButton(props) {
   );
 }
 
-CustomButton.propTypes = {
-  children: PropTypes.node,
-  classes: PropTypes.object.isRequired,
-  className: PropTypes.string,
-};
-
 export default withStyles(styles)(CustomButton);
