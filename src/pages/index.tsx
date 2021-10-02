@@ -7,7 +7,7 @@ import CategoryList from 'components/CategoryList';
 import Header from 'components/Header';
 import { auth } from '../../lib/db';
 import { useRouter } from 'next/router';
-import DesktopAccessDisabledIcon from '@material-ui/icons/DesktopAccessDisabled';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import styles from '../styles/auth.module.css';
 import SimpleBottomNavigation from 'views/Navigation';
 
@@ -96,7 +96,7 @@ const Home = ({ currentUser }) => {
     <div className="container">
       <Header title="みーたんタイマー" />
       <div className="content">
-        <div>{currentUser ? <DesktopAccessDisabledIcon onClick={logOut} className={styles.logout_icon} /> : ''}</div>
+        <div>{currentUser ? <ExitToAppIcon onClick={logOut} className={styles.logout_icon} /> : ''}</div>
         <hr></hr>
         <div style={{ marginBottom: 40 }}>
           <p className="title">カテゴリー</p>
