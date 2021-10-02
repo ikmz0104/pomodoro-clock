@@ -177,6 +177,7 @@ const WorkPage: React.FC<WorkPageProps> = ({ userId }) => {
         ) : (
           <div className={styles.container}>
             <div className={styles.label}>
+              <p>{name}</p>
               <p>{timeLabel}</p>
               <p>{defaultSessionLength}min</p>
             </div>
