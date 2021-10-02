@@ -81,7 +81,6 @@ const Home = ({ currentUser }) => {
     <div className="container">
       <Header title="みーたんタイマー" />
       <div className="content">
-        <hr></hr>
         <div style={{ marginBottom: 40 }}>
           <p className="title">カテゴリー</p>
           <CategoryList categories={categories} />
