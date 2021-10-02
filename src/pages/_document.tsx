@@ -2,10 +2,10 @@ import Document, { DocumentContext, Html, Head, Main, NextScript } from 'next/do
 import { ServerStyleSheets as MaterialUiServerStyleSheets } from '@material-ui/styles';
 
 class CustomDocument extends Document {
-  url = ''; //サイトurl
+  url = process.env.NEXT_PUBLIC_BASE_URL; //サイトurl
   title = 'みーたんタイマー';
   description = 'みーたんのタイマー';
-  image = ''; //サムネ画像url
+  image = `${this.url}/icon-256x256.png`; //サムネ画像url
 
   render(): JSX.Element {
     return (
@@ -21,7 +21,7 @@ class CustomDocument extends Document {
           <meta name="theme-color" content="#F779AF" />
           <link rel="icon" sizes="192x192" href="/icon-192x192.png" />
           <link rel="icon" href="/favicon.ico" />
-          {/* <meta property="og:url" content={this.url} /> */}
+          <meta property="og:url" content={this.url} />
           <meta property="og:description" content={this.description} />
           <meta property="og:site_name" content={this.title} />
           <meta property="og:image" content={this.image} />
