@@ -1,21 +1,21 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-type GraphData = {
-  x: string;
-  y: number;
-};
+// type GraphData = {
+//   x: string,
+//   y: number,
+// };
 
-type Series = {
-  name: string;
-  data: GraphData[];
-}[];
+// type Series = {
+//   name: string,
+//   data: GraphData[],
+// }[];
 
-type GraphProps = {
-  series: Series;
-};
+// type GraphProps = {
+//   series: Series,
+// };
 
-const Graph: React.FC<GraphProps> = ({ series }) => {
+const Graph = ({ series }) => {
   const state = {
     series: series,
     options: {

@@ -11,11 +11,16 @@ class CustomDocument extends Document {
     return (
       <Html lang="ja">
         <Head>
-          <title>{this.title}</title>
           <meta name="description" content={this.description} />
           <meta name="theme-color" content="#333" />
           <meta property="og:type" content="website" />
           <meta property="og:title" content={this.title} />
+          {/* PWA設定 */}
+          <link rel="manifest" href="/manifest.json" />
+          <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png"></link>
+          <meta name="theme-color" content="#F779AF" />
+          <link rel="icon" sizes="192x192" href="/icon-192x192.png" />
+          <link rel="icon" href="/favicon.ico" />
           {/* <meta property="og:url" content={this.url} /> */}
           <meta property="og:description" content={this.description} />
           <meta property="og:site_name" content={this.title} />
