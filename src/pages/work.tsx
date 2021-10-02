@@ -189,7 +189,6 @@ const WorkPage: React.FC<WorkPageProps> = ({ userId }) => {
       <VerificationModal open={open} handleModalClose={handleModalClose} onReset={onReset} name={session ? name : '休憩'} />
       <audio id="beep" preload="auto" src={chime} ref={chimeAudioBeep} onEnded={playMitanVoice}></audio>
       <audio id="beep" preload="auto" src={breakSound} ref={minaAudioBeep}></audio>
-      <SimpleBottomNavigation />
     </div>
   );
 };
