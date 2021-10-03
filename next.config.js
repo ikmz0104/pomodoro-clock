@@ -5,6 +5,7 @@ module.exports = withPWA({
     dest: 'public',
     register: true,
     skipWaiting: true,
+    disable: true,
   },
   env: {
     NEXT_PUBLIC_FIREBASE_KEY: process.env.FIREBASE_KEY,
