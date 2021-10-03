@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Router from 'next/router';
 import Link from 'next/link';
-import { auth } from '../../lib/db';
+import { auth, providerTwitter } from '../../lib/db';
 // import firebase from 'firebase';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -15,6 +15,8 @@ import { Modal, Button } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import MoodBadIcon from '@material-ui/icons/MoodBad';
 import CustomButton from 'components/Button';
+import { TwitterLoginButton } from 'react-social-login-buttons';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function getModalStyle() {
   const top = 50;
@@ -91,10 +93,20 @@ const Login: React.FC = () => {
       });
   };
 
+  const handleTwitterLogin = async () => {
+    // ツイッターログイン処理
+    await auth.signInWithRedirect(providerTwitter);
+    setLoading(true);
+  };
+
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      user && Router.push('/');
-    });
+    setLoading(true);
+    async function fetchData() {
+      await auth.onAuthStateChanged((user) => {
+        user ? Router.push('/') : setLoading(false);
+      });
+    }
+    fetchData();
   }, []);
 
   const logIn = async (e) => {
@@ -123,57 +135,67 @@ const Login: React.FC = () => {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <Box component="form" className={classes.form}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={email}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setEmail(e.target.value);
-            }}
-            error={errorEmail}
-            helperText={errorEmail && errorMessage}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setPassword(e.target.value);
-            }}
-            error={errorPassword}
-            helperText={errorPassword && errorMessage}
-          />
-          <CustomButton
-            className={classes.submit}
-            type="submit"
-            onClick={logIn}
-            color="primary"
-            fullWidth
-            variant="contained"
-            disabled={loading}
-          >
-            <LockOpenSharpIcon />
-            &nbsp;Login
-          </CustomButton>
-          <Link href="/signup">
-            <a className="auth-link">SIGNUP</a>
-          </Link>
-        </Box>
+        {!loading ? (
+          <Box component="form" className={classes.form}>
+            <TwitterLoginButton onClick={handleTwitterLogin} align="center" iconSize={'20'}>
+              <span style={{ fontSize: 16 }}>Twitterでログイン</span>
+            </TwitterLoginButton>
+            <p>or</p>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={email}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setEmail(e.target.value);
+              }}
+              error={errorEmail}
+              helperText={errorEmail && errorMessage}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setPassword(e.target.value);
+              }}
+              error={errorPassword}
+              helperText={errorPassword && errorMessage}
+            />
+            <CustomButton
+              className={classes.submit}
+              type="submit"
+              onClick={logIn}
+              color="primary"
+              fullWidth
+              variant="contained"
+              disabled={loading}
+            >
+              <LockOpenSharpIcon />
+              &nbsp;Login
+            </CustomButton>
+            <Link href="/signup">
+              <a className="auth-link">SIGNUP</a>
+            </Link>
+          </Box>
+        ) : (
+          <div style={{ height: '100vh', width: '100vw', marginTop: 100, textAlign: 'center' }}>
+            <CircularProgress />
+          </div>
+        )}
         <hr></hr>
         <Button
           className={styles.password_reset}
